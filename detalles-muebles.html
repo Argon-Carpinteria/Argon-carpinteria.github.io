@@ -9,158 +9,124 @@
     <style>
         body { font-family: 'Outfit', sans-serif; }
         .label-estilo { display: block; text-transform: uppercase; font-size: 0.75rem; font-weight: 700; color: #71717a; margin-bottom: 0.5rem; letter-spacing: 0.05em; }
-        .input-estilo { width: 100%; background-color: #f4f4f5; border: 2px solid #e4e4e7; padding: 1rem; border-radius: 1.25rem; outline: none; font-weight: 600; color: #18181b; appearance: none; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-        
-        .input-estilo:focus { border-color: #b45309; background-color: white; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(180, 83, 9, 0.1); }
-        .input-estilo:active { transform: scale(0.97); }
-
-        @keyframes price-pop {
-            0% { transform: scale(1); color: white; }
-            50% { transform: scale(1.05); color: #f59e0b; }
-            100% { transform: scale(1); color: white; }
-        }
-        .price-change { animation: price-pop 0.3s ease-out; }
+        .input-estilo { width: 100%; background-color: #f4f4f5; border: 2px solid #e4e4e7; padding: 1rem; border-radius: 1.25rem; outline: none; font-weight: 600; color: #18181b; appearance: none; cursor: pointer; transition: all 0.2s ease; }
+        .input-estilo:focus { border-color: #b45309; background-color: white; }
     </style>
 </head>
 <body class="bg-zinc-50 text-zinc-900">
 
     <nav class="fixed top-0 w-full z-50 p-6 pointer-events-none">
-        <button onclick="vibrar(10); window.history.back()" class="pointer-events-auto bg-white/90 backdrop-blur-md text-amber-900 font-bold px-6 py-3 rounded-2xl shadow-xl flex items-center gap-2 hover:bg-amber-600 hover:text-white transition-all active:scale-90 border border-amber-100">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
+        <button onclick="window.history.back()" class="pointer-events-auto bg-white/90 backdrop-blur-md text-amber-900 font-bold px-6 py-3 rounded-2xl shadow-xl flex items-center gap-2 border border-amber-100">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
             Volver
         </button>
     </nav>
 
-    <div class="w-full h-[50vh] relative overflow-hidden bg-zinc-200">
-        <img id="producto-img" src="" alt="Cargando..." class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-t from-zinc-50 via-transparent to-black/20"></div>
+    <div class="w-full h-[55vh] relative bg-zinc-200">
+        <img id="producto-img" src="sofa-gris.png" class="w-full h-full object-cover transition-opacity duration-300">
     </div>
 
-    <main class="max-w-4xl mx-auto px-6 pb-20 -mt-24 relative z-10">
+    <main class="max-w-4xl mx-auto px-6 pb-20 -mt-20 relative z-10">
         <div class="bg-white rounded-[3rem] shadow-2xl p-8 md:p-14 border border-zinc-100">
             
-            <div class="text-center space-y-4 mb-10">
-                <span id="categoria-tag" class="bg-amber-100 text-amber-800 px-4 py-1 rounded-full font-bold uppercase tracking-widest text-xs italic">Cargando...</span>
-                <h1 id="producto-nombre" class="text-4xl md:text-6xl font-bold text-zinc-800 italic uppercase leading-tight tracking-tighter text-balance">Cargando...</h1>
+            <div class="text-center mb-10">
+                <span id="categoria-tag" class="text-amber-700 font-bold uppercase tracking-widest text-xs">Personalizando tu Mueble</span>
+                <h1 id="producto-nombre" class="text-4xl font-bold text-zinc-800 italic uppercase">Conjunto Minimalista</h1>
             </div>
 
-            <div id="price-container" class="bg-zinc-900 rounded-[2rem] p-10 mb-6 text-center shadow-2xl relative overflow-hidden transition-all duration-300">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-amber-600/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
-                <span class="text-zinc-400 uppercase text-xs font-bold tracking-[0.2em]">Presupuesto Estimado</span>
-                <div class="text-6xl md:text-7xl font-bold text-white mt-4 flex items-center justify-center gap-3">
-                    <span id="precio-dinamico" class="tabular-nums">0</span>
-                    <span class="text-2xl text-amber-500 font-bold self-end mb-2">CUP</span>
+            <div class="bg-zinc-900 rounded-[2rem] p-8 mb-8 text-center text-white">
+                <span class="text-zinc-500 text-xs font-bold">PRESUPUESTO ESTIMADO</span>
+                <div class="text-5xl font-bold mt-2"><span id="precio-dinamico">0</span> <span class="text-amber-500 text-xl">CUP</span></div>
+            </div>
+
+            <div id="configurador-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <div>
+                    <label class="label-estilo">Dimensiones</label>
+                    <select id="opt1" onchange="actualizarMueble()" class="input-estilo">
+                        <option value="Pequeño" data-p="25000">Tamaño S</option>
+                        <option value="Mediano" data-p="45000">Tamaño M</option>
+                        <option value="Grande" data-p="75000">Tamaño L</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="label-estilo">Madera Principal</label>
+                    <select id="opt2" onchange="actualizarMueble()" class="input-estilo">
+                        <option value="Pino" data-p="0">Pino Tratado</option>
+                        <option value="Cedro" data-p="15000">Cedro Real (+15k)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="label-estilo">Tipo de Tela</label>
+                    <select id="opt3" onchange="actualizarMueble()" class="input-estilo">
+                        <option value="Polipiel" data-p="5000">Polipiel</option>
+                        <option value="Chenille" data-p="8000">Chenille</option>
+                        <option value="Algodon" data-p="3000">Algodón</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="label-estilo">Color de Tela</label>
+                    <select id="opt4" onchange="actualizarMueble()" class="input-estilo">
+                        <option value="Gris Claro" data-img="sofa-gris.png">Gris Claro</option>
+                        <option value="Cafe Claro" data-img="sofa-cafe.png">Café Claro</option>
+                        <option value="Negro" data-img="sofa-negro.png">Negro</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="mb-12 flex items-center justify-center gap-3 bg-amber-50 border border-amber-100 p-4 rounded-2xl text-amber-900">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <p class="text-sm md:text-base font-semibold italic">
-                    Todos nuestros muebles son por encargo, llegará en un plazo de 20 días.
-                </p>
-            </div>
-
-            <div id="configurador-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12"></div>
-
-            <button id="btn-continuar" class="group block w-full bg-amber-700 hover:bg-amber-800 text-white text-center py-7 rounded-[1.5rem] font-bold text-2xl shadow-2xl transition-all transform active:scale-[0.95] shadow-amber-200 relative overflow-hidden">
-                <span class="relative z-10 flex items-center justify-center gap-3">
-                    Revisar mi Pedido 
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:translate-x-2 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                </span>
+            <button id="btn-continuar" class="w-full bg-amber-700 hover:bg-amber-800 text-white py-6 rounded-2xl font-bold text-xl shadow-xl transition-all active:scale-95">
+                Añadir al Carrito
             </button>
         </div>
     </main>
 
     <script>
-        function vibrar(ms) {
-            if (navigator.vibrate) {
-                navigator.vibrate(ms);
-            }
-        }
-
-        const params = new URLSearchParams(window.location.search);
-        const nombre = params.get('nombre') || "Mueble Argon";
-        const imgRaw = params.get('img') || "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?q=80&w=1200";
-        
-        document.getElementById('producto-nombre').innerText = nombre;
-        document.getElementById('producto-img').src = imgRaw.replace(/\|/g, '&');
-
-        const esSofa = /sofa|sofá|sillón|sillon|chaise|chesterfield/i.test(nombre);
-        const esPuerta = /puerta/i.test(nombre);
-        const grid = document.getElementById('configurador-grid');
-
-        function setGrid(content) {
-            grid.innerHTML = content;
-        }
-
-        if (esSofa) {
-            document.getElementById('categoria-tag').innerText = "Configurador de Sofás";
-            setGrid(`
-                <div><label class="label-estilo">Capacidad / Modelo</label><select id="opt1" onchange="vibrar(15); calcular()" class="input-estilo"><option value="2 Plazas" data-p="75000">2 Plazas Standard</option><option value="3 Plazas" data-p="95000">3 Plazas Comfort</option><option value="Esquinero L" data-p="145000">Esquinero en L</option></select></div>
-                <div><label class="label-estilo">Estructura Interna</label><select id="opt2" onchange="vibrar(15); calcular()" class="input-estilo"><option value="Pino" data-p="0">Pino Tratado (Base)</option><option value="Cedro" data-p="25000">Cedro Real (+25k)</option></select></div>
-                <div><label class="label-estilo">Tipo de Tela</label><select id="opt3" onchange="vibrar(15); calcular()" class="input-estilo"><option value="Microfibra" data-p="0">Microfibra Lavable</option><option value="Terciopelo" data-p="18000">Terciopelo Premium</option><option value="Lino" data-p="12000">Lino Importado</option></select></div>
-                <div><label class="label-estilo">Densidad de Espuma</label><select id="opt4" onchange="vibrar(15); calcular()" class="input-estilo"><option value="Media" data-p="0">Densidad 25 (Suave)</option><option value="Alta" data-p="10000">Densidad 35 (Firme)</option></select></div>
-            `);
-        } else if (esPuerta) {
-            document.getElementById('categoria-tag').innerText = "Configurador de Puertas";
-            setGrid(`
-                <div><label class="label-estilo">Tipo de Madera</label><select id="opt1" onchange="vibrar(15); calcular()" class="input-estilo"><option value="Cedro" data-p="45000">Cedro Real</option><option value="Roble" data-p="65000">Roble Blanco</option><option value="Caoba" data-p="85000">Caoba Selecta</option></select></div>
-                <div><label class="label-estilo">Acabado Final</label><select id="opt2" onchange="vibrar(15); calcular()" class="input-estilo"><option value="Mate" data-p="0">Barniz Mate</option><option value="Semibrillante" data-p="3000">Semibrillante</option><option value="Alto Brillo" data-p="8000">Alto Brillo (Laca)</option></select></div>
-                <div><label class="label-estilo">Herrajes</label><select id="opt3" onchange="vibrar(15); calcular()" class="input-estilo"><option value="Económico" data-p="0">Herraje Estándar</option><option value="Premium" data-p="12000">Kit Seguridad Pesado</option></select></div>
-                <div><label class="label-estilo">Instalación</label><select id="opt4" onchange="vibrar(15); calcular()" class="input-estilo"><option value="Solo Entrega" data-p="0">Solo Entrega</option><option value="Con Montaje" data-p="5000">Montaje Profesional</option></select></div>
-            `);
-        } else {
-            document.getElementById('categoria-tag').innerText = "Personalización de Mueble";
-            setGrid(`
-                <div><label class="label-estilo">Dimensiones</label><select id="opt1" onchange="vibrar(15); calcular()" class="input-estilo"><option value="Pequeño" data-p="25000">Tamaño S</option><option value="Mediano" data-p="45000">Tamaño M</option><option value="Grande" data-p="75000">Tamaño L</option></select></div>
-                <div><label class="label-estilo">Madera Principal</label><select id="opt2" onchange="vibrar(15); calcular()" class="input-estilo"><option value="Pino" data-p="0">Pino Tratado</option><option value="Cedro" data-p="15000">Cedro (+15k)</option></select></div>
-                <div><label class="label-estilo">Estilo</label><select id="opt3" onchange="vibrar(15); calcular()" class="input-estilo"><option value="Moderno" data-p="0">Moderno</option><option value="Clásico" data-p="5000">Clásico Tallado</option></select></div>
-                <div><label class="label-estilo">Barniz</label><select id="opt4" onchange="vibrar(15); calcular()" class="input-estilo"><option value="Natural" data-p="0">Natural</option><option value="Tinte" data-p="3000">Tinte Caoba/Nogal</option></select></div>
-            `);
-        }
-
-        function calcular() {
+        function actualizarMueble() {
             const v1 = document.getElementById('opt1');
             const v2 = document.getElementById('opt2');
             const v3 = document.getElementById('opt3');
             const v4 = document.getElementById('opt4');
-            const precioLabel = document.getElementById('precio-dinamico');
+            const imgDisplay = document.getElementById('producto-img');
 
+            // 1. Cambio de Imagen Real
+            const nuevaFoto = v4.options[v4.selectedIndex].getAttribute('data-img');
+            imgDisplay.style.opacity = "0.5";
+            setTimeout(() => {
+                imgDisplay.src = nuevaFoto;
+                imgDisplay.style.opacity = "1";
+            }, 100);
+
+            // 2. Cálculo de Precio
             const total = (parseInt(v1.options[v1.selectedIndex].dataset.p) || 0) +
                           (parseInt(v2.options[v2.selectedIndex].dataset.p) || 0) +
-                          (parseInt(v3.options[v3.selectedIndex].dataset.p) || 0) +
-                          (parseInt(v4.options[v4.selectedIndex].dataset.p) || 0);
-
-            precioLabel.classList.remove('price-change');
-            void precioLabel.offsetWidth; 
-            precioLabel.classList.add('price-change');
+                          (parseInt(v3.options[v3.selectedIndex].dataset.p) || 0);
             
-            precioLabel.innerText = total.toLocaleString('es-ES');
+            document.getElementById('precio-dinamico').innerText = total.toLocaleString('es-ES');
 
+            // 3. LOGICA PARA GUARDAR EN CARRITO
             document.getElementById('btn-continuar').onclick = () => {
-                vibrar([30, 50, 30]);
-                const query = new URLSearchParams({
-                    nombre: nombre, 
-                    img: imgRaw, 
-                    total: total.toLocaleString('es-ES'),
-                    p1: v1.value, 
-                    p2: v2.value, 
-                    p3: v3.value, 
-                    p4: v4.value
-                });
-                setTimeout(() => {
-                    window.location.href = 'confirmacion.html?' + query.toString();
-                }, 150);
+                // Creamos el objeto con TODOS los detalles
+                const productoPersonalizado = {
+                    nombre: document.getElementById('producto-nombre').innerText,
+                    precio: total, // Guardamos el número limpio
+                    p1: v1.value,      // Dimensión
+                    madera: v2.value,  // Madera
+                    tela: v3.value,    // Tela
+                    color: v4.value,   // Color
+                    categoria: document.getElementById('categoria-tag').innerText,
+                    img: nuevaFoto
+                };
+
+                // Guardar en LocalStorage
+                let carrito = JSON.parse(localStorage.getItem('carritoArgon')) || [];
+                carrito.push(productoPersonalizado);
+                localStorage.setItem('carritoArgon', JSON.stringify(carrito));
+
+                // Redirigir al carrito
+                window.location.href = 'carrito.html';
             };
         }
 
-        window.onload = calcular;
+        window.onload = actualizarMueble;
     </script>
 </body>
 </html>

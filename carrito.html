@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
-        /* Mejora el scroll en móviles */
         .custom-scroll { overflow-y: auto; scrollbar-width: none; }
         .custom-scroll::-webkit-scrollbar { display: none; }
     </style>
@@ -31,7 +30,8 @@
                 <span id="total-letras" class="text-right text-[10px] md:text-xs text-zinc-400 uppercase font-medium mt-1 leading-tight"></span>
             </div>
             
-            <button onclick="enviarPedidoFinal()" class="w-full bg-green-600 text-white py-4 md:py-5 rounded-xl md:rounded-2xl font-bold text-lg md:text-xl hover:bg-green-700 transition-all shadow-lg shadow-green-100 active:scale-[0.98] mb-4">
+            <button onclick="enviarPedidoFinal()" class="w-full bg-green-600 text-white py-4 md:py-5 rounded-xl md:rounded-2xl font-bold text-lg md:text-xl hover:bg-green-700 transition-all shadow-lg shadow-green-100 active:scale-[0.98] mb-4 flex items-center justify-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.406.832 2.081 1.045 3.731 1.046 5.238 0 9.501-4.263 9.504-9.501.002-5.238-4.261-9.501-9.501-9.501-5.241 0-9.501 4.263-9.504 9.501-.001 1.917.485 3.255 1.343 4.731l-.971 3.547 3.6-.944z"/></svg>
                 Enviar por WhatsApp
             </button>
             
@@ -77,10 +77,7 @@
             let total = 0;
 
             if (carrito.length === 0) {
-                contenedor.innerHTML = `
-                    <div class="text-center py-16 bg-white rounded-3xl border-2 border-dashed border-zinc-200">
-                        <p class="text-zinc-400 text-base md:text-lg">Tu carrito está vacío.</p>
-                    </div>`;
+                contenedor.innerHTML = `<div class="text-center py-16 bg-white rounded-3xl border-2 border-dashed border-zinc-200"><p class="text-zinc-400 text-base md:text-lg">Tu carrito está vacío.</p></div>`;
                 document.getElementById('total-general').innerText = "0 CUP";
                 document.getElementById('total-letras').innerText = "";
                 return;
@@ -90,20 +87,24 @@
                 let precioLimpio = item.precio ? String(item.precio).replace(/[.,\sCUPcup]/g, '') : "0";
                 const precioNum = parseInt(precioLimpio) || 0;
                 total += precioNum;
-                
+                const specs = [];
+                if (item.p1) specs.push(item.p1);
+                if (item.madera) specs.push(item.madera);
+                if (item.tela) specs.push(item.tela);
+                if (item.color) specs.push(item.color);
+
                 return `
                     <div class="bg-white p-4 md:p-6 rounded-2xl shadow-sm flex justify-between items-center border border-zinc-100">
                         <div class="pr-2">
                             <h3 class="font-bold text-base md:text-lg text-zinc-800 leading-tight">${item.nombre || 'Producto'}</h3>
                             <p class="text-[11px] md:text-sm text-amber-700 font-semibold uppercase tracking-wider">${item.categoria || 'Mueble'}</p>
+                            <p class="text-[10px] text-zinc-400 mt-1 uppercase leading-none">${specs.join(' • ')}</p>
                         </div>
                         <div class="text-right flex-shrink-0">
                             <span class="block font-bold text-lg md:text-xl text-zinc-900">${precioNum.toLocaleString('es-ES')} <small class="text-[9px]">CUP</small></span>
-                            <span class="block text-[9px] text-zinc-400 uppercase italic mb-1">${numeroALetras(precioNum)}</span>
                             <button onclick="eliminarItem(${index})" class="text-red-500 text-[10px] font-bold hover:underline">ELIMINAR</button>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             }).join('');
 
             document.getElementById('total-general').innerText = total.toLocaleString('es-ES') + " CUP";
@@ -121,21 +122,36 @@
             const carrito = JSON.parse(localStorage.getItem('carritoArgon')) || [];
             if (carrito.length === 0) return;
 
+            // Obtenemos la URL base de tu sitio para que el link funcione
+            const urlBase = window.location.origin + window.location.pathname.replace('carrito.html', '');
+
             let totalAcumulado = 0;
-            let texto = "*NUEVO PEDIDO - ARGON CARPINTERÍA*\n";
+            let texto = "*📦 NUEVO PEDIDO - ARGON CARPINTERÍA*\n";
             texto += "------------------------------\n\n";
             
             carrito.forEach((item, i) => {
                 let precioLimpio = item.precio ? String(item.precio).replace(/[.,\sCUPcup]/g, '') : "0";
                 const p = parseInt(precioLimpio) || 0;
                 totalAcumulado += p;
-                texto += `${i+1}. *${item.nombre}*\n   Precio: ${p.toLocaleString('es-ES')} CUP\n\n`;
+
+                texto += `*${i+1}. ${item.nombre.toUpperCase()}*\n`;
+                if(item.p1)     texto += `   📏 Medida: ${item.p1}\n`;
+                if(item.madera) texto += `   🪵 Madera: ${item.madera}\n`;
+                if(item.tela)   texto += `   🧶 Tela: ${item.tela}\n`;
+                if(item.color)  texto += `   🎨 Color: ${item.color}\n`;
+                
+                // AQUÍ SE AGREGA EL LINK DE LA FOTO
+                if(item.img) {
+                    texto += `   🖼️ Foto: ${urlBase}${item.img}\n`;
+                }
+                
+                texto += `   💰 Precio: ${p.toLocaleString('es-ES')} CUP\n\n`;
             });
 
             texto += "------------------------------\n";
             texto += `*TOTAL A PAGAR:* ${totalAcumulado.toLocaleString('es-ES')} CUP\n`;
             texto += `(_${numeroALetras(totalAcumulado)} pesos_)\n\n`;
-            texto += "_Por favor, confírmenme disponibilidad._";
+            texto += "✅ _Por favor, confírmenme para coordinar el pedido._";
 
             const url = `https://wa.me/5358748550?text=${encodeURIComponent(texto)}`;
             window.open(url, '_blank');

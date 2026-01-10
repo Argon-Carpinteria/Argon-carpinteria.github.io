@@ -63,15 +63,16 @@
             offset: 50
         });
 
-        // Función para la vibración háptica (Feedback Táctil)
+        // Función para la vibración háptica
         function darVibracion() {
             if (window.navigator && window.navigator.vibrate) {
-                window.navigator.vibrate(10); // Vibración sutil de 10 milisegundos
+                window.navigator.vibrate(10);
             }
         }
 
+        // Lista de sofás actualizada
         const sofas = [
-            { nombre: "Chesterfield Clásico", img: "1555041469-a586c61ea9bc" },
+            { nombre: "Conjunto Minimalista Gris", img: "sofa-gris.png", local: true }, // Imagen local generada
             { nombre: "Sofá Nórdico Minimalista", img: "1550254478-ead40cd82477" },
             { nombre: "Sofá Tres Plazas Gris", img: "1493663284031-b7e3aefcae8e" },
             { nombre: "Chaise Longue Moderno", img: "1540518614846-7eded433c457" },
@@ -97,17 +98,19 @@
         let htmlContent = "";
 
         sofas.forEach((s, index) => {
-            const imgFullUrl = `https://images.unsplash.com/photo-${s.img}?q=80&w=800`;
+            // Determinar la URL de la imagen
+            const imgFullUrl = s.local ? s.img : `https://images.unsplash.com/photo-${s.img}?q=80&w=800`;
+            const imgDisplayUrl = s.local ? s.img : `https://images.unsplash.com/photo-${s.img}?q=80&w=600`;
+            
             const imgParam = imgFullUrl.replace(/&/g, '|');
             const delay = (index % 3) * 150;
 
-            // Se añadió la clase 'tap-feedback' y el evento 'onmousedown="darVibracion()"'
             htmlContent += `
             <div data-aos="fade-up" data-aos-delay="${delay}" 
                  onmousedown="darVibracion()" 
                  class="tap-feedback bg-white rounded-[2.5rem] shadow-lg overflow-hidden border border-zinc-100 group hover:shadow-2xl transition-all duration-500 cursor-pointer">
                 <a href="detalles-muebles.html?nombre=${encodeURIComponent(s.nombre)}&img=${imgParam}" class="block relative overflow-hidden h-80">
-                    <img src="https://images.unsplash.com/photo-${s.img}?q=80&w=600" 
+                    <img src="${imgDisplayUrl}" 
                          alt="${s.nombre}" 
                          class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
                     <div class="absolute inset-0 bg-zinc-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center backdrop-blur-[2px] p-6 text-center">
