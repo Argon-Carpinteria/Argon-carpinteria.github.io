@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARGON | Colección de Puertas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+    </style>
+</head>
+<body class="bg-zinc-50 text-zinc-900">
+
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
+    <div class="max-w-[95%] mx-auto px-2 py-4 flex justify-between items-center">
+        <a href="web.html" class="flex items-center gap-2">
+            <img src="logo.jpeg" alt="ARGON Logo" class="h-12 w-auto object-contain">
+            <span class="text-3xl font-bold tracking-tighter text-amber-900">ARGON</span>
+        </a>
+        
+        <a href="web.html" class="bg-amber-700 hover:bg-amber-800 text-white px-5 py-2 rounded-xl font-bold transition shadow-md flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Volver al Inicio
+        </a>
+    </div>
+</nav>
+
+    <header class="pt-32 pb-10 bg-zinc-100">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h1 class="text-5xl font-bold text-zinc-800 italic mb-4">Puertas de Madera Sólida</h1>
+            <p class="text-zinc-500 max-w-2xl mx-auto">Seguridad, elegancia y durabilidad. Fabricamos puertas principales e interiores utilizando las mejores maderas de Cuba.</p>
+        </div>
+    </header>
+
+    <section class="py-20 max-w-7xl mx-auto px-6">
+        <div id="puertas-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            
+            <div class="bg-white rounded-3xl shadow-lg overflow-hidden border border-zinc-100 group">
+                <div class="relative overflow-hidden h-72">
+                    <img src="https://images.unsplash.com/photo-1506377295352-e3154d43ea9e?q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    <div class="absolute top-4 left-4 bg-amber-700 text-white text-[10px] uppercase tracking-widest px-3 py-1 rounded-full">Caoba Cubana</div>
+                </div>
+                <div class="p-8 text-center">
+                    <h3 class="text-2xl font-bold text-zinc-800">Puerta Principal Tallada</h3>
+                    <div class="mt-4 inline-block bg-zinc-50 px-6 py-2 rounded-2xl border border-zinc-100">
+                        <span class="text-2xl font-bold text-amber-900">55,000 <small class="text-xs italic">CUP</small></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-lg overflow-hidden border border-zinc-100 group">
+                <div class="relative overflow-hidden h-72">
+                    <img src="https://images.unsplash.com/photo-1515516089376-88db1e267f6a?q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    <div class="absolute top-4 left-4 bg-amber-700 text-white text-[10px] uppercase tracking-widest px-3 py-1 rounded-full">Cedro Real</div>
+                </div>
+                <div class="p-8 text-center">
+                    <h3 class="text-2xl font-bold text-zinc-800">Puerta Interior Minimalista</h3>
+                    <div class="mt-4 inline-block bg-zinc-50 px-6 py-2 rounded-2xl border border-zinc-100">
+                        <span class="text-2xl font-bold text-amber-900">32,000 <small class="text-xs italic">CUP</small></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="bg-zinc-900 text-white py-12 text-center">
+        <p class="text-zinc-500 text-sm">&copy; 2026 ARGON Carpintería - La Habana, Cuba.</p>
+    </footer>
+
+</body>
+</html>
