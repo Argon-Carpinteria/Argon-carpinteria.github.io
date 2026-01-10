@@ -6,13 +6,24 @@
     <title>ARGON | Carpintería de Excelencia</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
     <style>
         body { font-family: 'Outfit', sans-serif; scroll-behavior: smooth; }
-        #panel-derecho.hidden { transform: translateX(100%); display: none; }
+        
+        /* --- CORRECCIÓN PANEL LATERAL --- */
         #panel-derecho { 
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-            display: block;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s; 
+            transform: translateX(100%);
+            visibility: hidden; 
+            pointer-events: none;
         }
+        #panel-derecho.active { 
+            transform: translateX(0); 
+            visibility: visible;
+            pointer-events: auto;
+        }
+
         .menu-item {
             transition: all 0.3s ease;
             border-left: 0px solid #92400e;
@@ -23,6 +34,38 @@
             background-color: #fffaf5;
             color: #92400e;
         }
+
+        .tap-feedback {
+            transition: transform 0.1s ease, opacity 0.1s ease;
+        }
+        .tap-feedback:active {
+            transform: scale(0.95);
+            opacity: 0.8;
+        }
+
+        .video-docker video {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: cover;
+        }
+
+        /* --- ESTILOS SKELETON SCREEN --- */
+        .skeleton {
+            background: #e4e4e7;
+            background: linear-gradient(90deg, #f4f4f5 25%, #e4e4e7 50%, #f4f4f5 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+        }
+
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
     </style>
 </head>
 <body class="bg-zinc-50 text-zinc-900 relative">
@@ -30,7 +73,7 @@
     <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
         <div class="max-w-[95%] mx-auto px-2 py-4 flex justify-between items-center">
             <div class="flex items-center gap-2">
-                <img src="logo.jpeg" alt="ARGON Logo" id="logo-argon" class="h-12 w-auto object-contain">
+                <img src="logo.jpeg" alt="Logotipo de ARGON Carpintería" id="logo-argon" class="h-12 w-auto object-contain">
                 <span class="text-3xl font-bold tracking-tighter text-amber-900">ARGON</span>
             </div>
             
@@ -40,7 +83,7 @@
                     <a href="#catalogo" class="hover:text-amber-700 transition">Lo más vendido</a>
                 </div>
 
-                <button onclick="abrirPanel()" class="bg-amber-700 text-white p-2.5 rounded-xl hover:bg-amber-800 hover:scale-105 transition-all shadow-md">
+                <button aria-label="Abrir menú" onclick="abrirPanel()" class="tap-feedback bg-amber-700 text-white p-2.5 rounded-xl hover:bg-amber-800 transition-all shadow-md">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                     </svg>
@@ -49,60 +92,83 @@
         </div>
     </nav>
 
-    <section id="inicio" class="relative h-[80vh] flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&q=80" class="w-full h-full object-cover brightness-50" alt="Carpintería Argon">
+    <section id="inicio" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="video-docker absolute inset-0 z-0">
+            <video class="absolute object-cover w-full h-full" 
+                   autoplay 
+                   muted 
+                   loop 
+                   playsinline 
+                   preload="auto"
+                   poster="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?q=80&w=1920">
+                <source src="./hero-argon.mp4" type="video/mp4">
+                Tu navegador no soporta videos.
+            </video>
+            <div class="absolute inset-0 bg-black/50"></div>
         </div>
+
         <div class="relative z-10 text-center text-white px-6">
-            <h1 class="text-5xl md:text-7xl font-bold mb-4">Mobiliario con Alma</h1>
-            <p class="text-xl md:text-2xl font-light mb-8 max-w-2xl mx-auto">En ARGON transformamos la madera en piezas maestras para tu hogar en Cuba.</p>
-            <a href="#catalogo" class="bg-amber-700 hover:bg-amber-800 text-white px-10 py-4 rounded-full text-lg font-bold transition-all transform hover:scale-105 shadow-xl">Ver Productos</a>
+            <h1 data-aos="fade-up" class="text-5xl md:text-8xl font-bold mb-6 tracking-tighter italic">Mobiliario con Alma</h1>
+            <p data-aos="fade-up" data-aos-delay="200" class="text-xl md:text-3xl font-light mb-10 max-w-3xl mx-auto opacity-90">Transformamos la madera en piezas maestras de diseño artesanal en La Habana.</p>
+            <div data-aos="fade-up" data-aos-delay="400" class="flex flex-col md:flex-row gap-4 justify-center items-center">
+                <a href="#catalogo" class="tap-feedback bg-amber-700 hover:bg-amber-800 text-white px-12 py-5 rounded-full text-xl font-bold transition-all shadow-2xl">
+                    Explorar Colección
+                </a>
+                <a href="https://wa.me/5358748550?text=Hola,%20quisiera%20solicitar%20una%20cotización%20para%20un%20mueble." target="_blank" class="tap-feedback bg-white/10 backdrop-blur-md border border-white/30 hover:bg-white/20 text-white px-12 py-5 rounded-full text-xl font-bold transition-all">
+                    Cotizar Ahora
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
+            <svg class="w-8 h-8 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
         </div>
     </section>
 
-    <section id="catalogo" class="py-20 max-w-7xl mx-auto px-6">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-bold text-zinc-800 mb-4 italic">Lo más vendido</h2>
-            <div class="h-1 w-24 bg-amber-700 mx-auto rounded-full"></div>
+    <section id="catalogo" class="py-24 max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-4xl md:text-6xl font-bold text-zinc-800 mb-4 italic">Lo más vendido</h2>
+            <div class="h-1.5 w-32 bg-amber-700 mx-auto rounded-full"></div>
         </div>
 
-        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             </div>
     </section>
 
-    <div id="overlay" onclick="cerrarPanel()" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[110] hidden"></div>
+    <div id="overlay" onclick="cerrarPanel()" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[110] hidden opacity-0 transition-opacity duration-300"></div>
 
-<div id="panel-derecho" class="fixed top-0 right-0 w-80 md:w-96 h-full bg-white z-[120] shadow-2xl p-8 transform hidden overflow-y-auto max-h-full">
-    
-    <div class="flex justify-between items-center mb-8">
-        <h3 class="text-xl font-bold text-zinc-400 uppercase tracking-widest">Menú</h3>
-        <button onclick="cerrarPanel()" class="text-zinc-400 hover:text-red-600 text-2xl font-bold p-2">✕</button>
-    </div>
-
-    <div class="flex flex-col gap-2 mb-12">
-        <button onclick="filtrarDesdeMenu('todos')" class="menu-item text-left py-4 px-4 text-2xl font-bold text-zinc-800 rounded-r-xl">Todos los productos</button>
-        <a href="sofas.html" class="menu-item text-left py-4 px-4 text-2xl font-bold text-zinc-800 rounded-r-xl block">Sofás</a>
-        <a href="puertas.html" class="menu-item text-left py-4 px-4 text-2xl font-bold text-zinc-800 rounded-r-xl block">Puertas</a>
-        <a href="multimuebles.html" class="menu-item text-left py-4 px-4 text-2xl font-bold text-zinc-800 rounded-r-xl block">Multimuebles</a>
-        <button onclick="filtrarDesdeMenu('cocina')" class="menu-item text-left py-4 px-4 text-2xl font-bold text-zinc-800 rounded-r-xl">Cocinas</button>
-        <button onclick="filtrarDesdeMenu('decoracion')" class="menu-item text-left py-4 px-4 text-2xl font-bold text-zinc-800 rounded-r-xl">Decoración</button>
-    </div>
-
-    <div class="pt-8 border-t border-zinc-100 space-y-6 pb-10">
-        <div>
-            <h4 class="font-bold text-amber-900 text-xs uppercase tracking-widest mb-2">Contacto & Horarios</h4>
-            <p class="text-zinc-600 text-sm italic">La Habana, Cuba</p>
-            <p class="text-zinc-600 text-sm font-medium">Lunes - Sábado: 9:00 AM - 5:00 PM</p>
+    <div id="panel-derecho" class="fixed top-0 right-0 w-80 md:w-96 h-full bg-white z-[120] shadow-2xl p-8 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h3 class="text-xl font-bold text-zinc-400 uppercase tracking-widest">Menú</h3>
+            <button aria-label="Cerrar menú" onclick="cerrarPanel()" class="tap-feedback text-zinc-400 hover:text-red-600 text-2xl font-bold p-2">✕</button>
         </div>
-        
-        <a href="https://wa.me/5358748550" target="_blank" class="flex items-center gap-3 bg-green-600 text-white p-4 rounded-2xl justify-center font-bold hover:bg-green-700 transition shadow-lg active:scale-95">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-            </svg>
-            WhatsApp Comercial
-        </a>
+
+        <div class="flex flex-col gap-2 mb-12">
+            <button onclick="filtrarDesdeMenu('todos')" class="menu-item text-left py-4 px-4 text-2xl font-bold text-zinc-800 rounded-r-xl">Todos los productos</button>
+            <a href="sofas.html" class="menu-item text-left py-4 px-4 text-2xl font-bold text-zinc-800 rounded-r-xl block">Sofás</a>
+            <a href="puertas.html" class="menu-item text-left py-4 px-4 text-2xl font-bold text-zinc-800 rounded-r-xl block">Puertas</a>
+            <a href="multimuebles.html" class="menu-item text-left py-4 px-4 text-2xl font-bold text-zinc-800 rounded-r-xl block">Multimuebles</a>
+            <button onclick="filtrarDesdeMenu('cocina')" class="menu-item text-left py-4 px-4 text-2xl font-bold text-zinc-800 rounded-r-xl">Cocinas</button>
+            <button onclick="filtrarDesdeMenu('decoracion')" class="menu-item text-left py-4 px-4 text-2xl font-bold text-zinc-800 rounded-r-xl">Decoración</button>
+        </div>
+
+        <div class="pt-8 border-t border-zinc-100 space-y-6 pb-10">
+            <div>
+                <h4 class="font-bold text-amber-900 text-xs uppercase tracking-widest mb-2">Contacto & Horarios</h4>
+                <p class="text-zinc-600 text-sm italic">La Habana, Cuba</p>
+                <p class="text-zinc-600 text-sm font-medium">Lunes - Sábado: 9:00 AM - 5:00 PM</p>
+            </div>
+            
+            <a href="https://wa.me/5358748550" target="_blank" class="tap-feedback flex items-center gap-3 bg-green-600 text-white p-4 rounded-2xl justify-center font-bold hover:bg-green-700 transition shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+                </svg>
+                WhatsApp Comercial
+            </a>
+        </div>
     </div>
-</div>
 
     <footer class="bg-zinc-900 text-white py-12">
         <div class="max-w-7xl mx-auto px-6 text-center">
@@ -110,71 +176,111 @@
         </div>
     </footer>
 
+    <a href="carrito.html" aria-label="Ver carrito" class="tap-feedback fixed bottom-8 right-8 bg-amber-700 text-white p-5 rounded-full shadow-2xl z-50 flex items-center justify-center">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+        </svg>
+    </a>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        AOS.init({ duration: 1000, once: true, offset: 100 });
+
+        function vibrateMobile(ms = 50) {
+            if (navigator.vibrate) { navigator.vibrate(ms); }
+        }
+
         const productos = [
-            { nombre: "Sofá Chester Premium", categoria_id: "sofas", categoria_label: "Sofá", precio: "120,000", imagen: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=500" },
-            { nombre: "Puerta Principal Tallada", categoria_id: "puertas", categoria_label: "Puerta", precio: "55,000", imagen: "https://images.unsplash.com/photo-1506377295352-e3154d43ea9e?q=80&w=500" },
-            { nombre: "Multimueble de Salón", categoria_id: "multimuebles", categoria_label: "Mueble", precio: "85,000", imagen: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?q=80&w=500" },
-            { nombre: "Cocina Modular Argon", categoria_id: "cocina", categoria_label: "Cocina", precio: "210,000", imagen: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=500" },
-            { nombre: "Espejo Decorativo", categoria_id: "decoracion", categoria_label: "Decoración", precio: "15,000", imagen: "https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=500" }
+            { nombre: "Sofá Chester Premium", categoria_id: "sofas", categoria_label: "Sofá", precio: 120000, imagen: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=500" },
+            { nombre: "Puerta Principal Tallada", categoria_id: "puertas", categoria_label: "Puerta", precio: 55000, imagen: "https://images.unsplash.com/photo-1506377295352-e3154d43ea9e?q=80&w=500" },
+            { nombre: "Multimueble de Salón", categoria_id: "multimuebles", categoria_label: "Mueble", precio: 85000, imagen: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?q=80&w=500" },
+            { nombre: "Cocina Modular Argon", categoria_id: "cocina", categoria_label: "Cocina", precio: 210000, imagen: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=500" },
+            { nombre: "Espejo Decorativo", categoria_id: "decoracion", categoria_label: "Decoración", precio: 15000, imagen: "https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=500" }
         ];
 
-        function renderProducts(filtro = 'todos') {
+        function showSkeletons() {
             const grid = document.getElementById('product-grid');
-            grid.innerHTML = '';
-            
-            const productosFiltrados = filtro === 'todos' 
-                ? productos 
-                : productos.filter(p => p.categoria_id === filtro);
-
-            productosFiltrados.forEach(p => {
-                grid.innerHTML += `
-                    <div class="bg-white rounded-3xl shadow-lg overflow-hidden border border-zinc-100 group">
-                        <div class="relative overflow-hidden h-72">
-                            <img src="${p.imagen}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                            <div class="absolute top-4 left-4 bg-amber-700/90 text-white text-[10px] uppercase tracking-widest px-3 py-1 rounded-full backdrop-blur-sm">
-                                ${p.categoria_label}
-                            </div>
-                        </div>
-                        <div class="p-8 text-center">
-                            <h3 class="text-2xl font-bold text-zinc-800">${p.nombre}</h3>
-                            <div class="mt-4 inline-block bg-zinc-50 px-6 py-2 rounded-2xl border border-zinc-100">
-                                <span class="text-2xl font-bold text-amber-900">${p.precio} <small class="text-xs font-medium text-zinc-500 italic">CUP</small></span>
-                            </div>
+            let skeletons = "";
+            for (let i = 0; i < 3; i++) {
+                skeletons += `
+                    <div class="bg-white rounded-3xl shadow-lg overflow-hidden border border-zinc-100">
+                        <div class="skeleton h-72 w-full"></div>
+                        <div class="p-8 flex flex-col items-center gap-4">
+                            <div class="skeleton h-8 w-3/4 rounded-lg"></div>
+                            <div class="skeleton h-6 w-1/2 rounded-lg mt-2"></div>
+                            <div class="skeleton h-12 w-full rounded-xl mt-4"></div>
                         </div>
                     </div>
                 `;
-            });
+            }
+            grid.innerHTML = skeletons;
+        }
+
+        function renderProducts(filtro = 'todos') {
+            const grid = document.getElementById('product-grid');
+            showSkeletons();
+            setTimeout(() => {
+                grid.innerHTML = '';
+                const productosFiltrados = filtro === 'todos' ? productos : productos.filter(p => p.categoria_id === filtro);
+                productosFiltrados.forEach((p, index) => {
+                    grid.innerHTML += `
+                        <div data-aos="fade-up" data-aos-delay="${index * 100}" class="bg-white rounded-3xl shadow-lg overflow-hidden border border-zinc-100 group transition-all">
+                            <div class="relative overflow-hidden h-72">
+                                <img src="${p.imagen}" alt="${p.nombre}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                                <div class="absolute top-4 left-4 bg-amber-700/90 text-white text-[10px] uppercase tracking-widest px-3 py-1 rounded-full backdrop-blur-sm">
+                                    ${p.categoria_label}
+                                </div>
+                            </div>
+                            <div class="p-8 text-center">
+                                <h3 class="text-2xl font-bold text-zinc-800 line-clamp-1">${p.nombre}</h3>
+                                <div class="mt-4 flex flex-col gap-4">
+                                    <span class="text-2xl font-bold text-amber-900">${p.precio.toLocaleString()} <small class="text-xs font-medium text-zinc-500 italic">CUP</small></span>
+                                    <button onclick="vibrateMobile(30); agregarAlCarrito('${p.nombre}', ${p.precio}, '${p.categoria_label}')" 
+                                        class="tap-feedback bg-zinc-900 text-white py-4 rounded-xl font-bold hover:bg-amber-800 transition-all">
+                                        Añadir al Carrito
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                AOS.refresh();
+            }, 800); 
+        }
+
+        function agregarAlCarrito(nombre, precio, categoria) {
+            let carrito = JSON.parse(localStorage.getItem('carritoArgon')) || [];
+            carrito.push({ nombre, precio, categoria, fecha: new Date().getTime() });
+            localStorage.setItem('carritoArgon', JSON.stringify(carrito));
+            alert("¡" + nombre + " añadido al carrito!");
         }
 
         function filtrarDesdeMenu(cat) {
             renderProducts(cat);
-            // Actualizar el título de la sección para saber qué estamos viendo
             const titulo = document.querySelector('#catalogo h2');
-            if(cat === 'todos') {
-                titulo.innerText = "Lo más vendido";
-            } else {
-                titulo.innerText = "Colección: " + cat.charAt(0).toUpperCase() + cat.slice(1);
-            }
+            titulo.innerText = cat === 'todos' ? "Lo más vendido" : "Colección: " + cat.charAt(0).toUpperCase() + cat.slice(1);
             cerrarPanel();
-            // Desplazar suavemente a la sección de catálogo
             document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' });
         }
 
         function abrirPanel() {
+            vibrateMobile(20);
             const panel = document.getElementById('panel-derecho');
             const overlay = document.getElementById('overlay');
-            panel.classList.remove('hidden');
             overlay.classList.remove('hidden');
-            setTimeout(() => { panel.style.transform = "translateX(0)"; }, 10);
+            setTimeout(() => {
+                overlay.classList.add('opacity-100');
+                panel.classList.add('active');
+            }, 10);
             document.body.style.overflow = 'hidden';
         }
 
         function cerrarPanel() {
             const panel = document.getElementById('panel-derecho');
             const overlay = document.getElementById('overlay');
-            panel.style.transform = "translateX(100%)";
-            setTimeout(() => { panel.classList.add('hidden'); overlay.classList.add('hidden'); }, 300);
+            panel.classList.remove('active');
+            overlay.classList.remove('opacity-100');
+            setTimeout(() => { overlay.classList.add('hidden'); }, 400);
             document.body.style.overflow = 'auto';
         }
 
