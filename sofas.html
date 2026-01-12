@@ -3,129 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#92400e">
     <title>ARGON | Sofás</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
         body { font-family: 'Outfit', sans-serif; scroll-behavior: smooth; }
         
-        /* Estilo para el Feedback Táctil (Efecto de hundimiento) */
         .tap-feedback {
-            transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .tap-feedback:active {
-            transform: scale(0.96); /* Se hunde un poco al tocar */
+            transform: scale(0.97);
         }
+
+        /* Gradiente para asegurar legibilidad en las imágenes */
+        .overlay-sofia {
+            background: linear-gradient(to top, rgba(24, 24, 27, 0.8) 0%, rgba(24, 24, 27, 0) 60%);
+        }
+
+        /* Ocultar scrollbar pero permitir scroll */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-zinc-50 text-zinc-900">
 
-    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
-        <div class="max-w-[95%] mx-auto px-2 py-4 flex justify-between items-center">
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-lg border-b border-zinc-100">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
             <a href="index.html" class="flex items-center gap-2">
-                <img src="logo.jpeg" alt="ARGON Logo" class="h-12 w-auto object-contain">
-                <span class="text-3xl font-bold tracking-tighter text-amber-900">ARGON</span>
+                <img src="logo.jpeg" alt="ARGON" class="h-10 w-auto rounded-lg shadow-sm">
+                <span class="text-2xl font-black tracking-tighter text-amber-900 uppercase">ARGON</span>
             </a>
-            <a href="index.html" class="bg-amber-700 hover:bg-amber-800 text-white px-5 py-2 rounded-xl font-bold transition shadow-md flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            <a href="index.html" class="bg-amber-700 text-white p-2.5 rounded-xl hover:bg-amber-800 transition-all shadow-md active:scale-90">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                 </svg>
-                Inicio
             </a>
         </div>
     </nav>
 
-    <header class="pt-32 pb-16 bg-zinc-100 text-center overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6">
-            <h1 data-aos="fade-down" class="text-5xl md:text-6xl font-bold text-zinc-800 italic mb-4">SOFÁS</h1>
-            <div data-aos="fade-up" data-aos-delay="200" class="h-1.5 w-24 bg-amber-700 mx-auto mb-6 rounded-full"></div>
-            <p data-aos="fade-up" data-aos-delay="400" class="text-zinc-500 max-w-2xl mx-auto italic text-lg">Colección exclusiva de confort y diseño artesanal. Fabricados a tu medida en Cuba.</p>
+    <header class="pt-32 pb-12 bg-zinc-100 text-center relative overflow-hidden">
+        <div class="max-w-3xl mx-auto px-6 relative z-10">
+            <h1 data-aos="fade-down" class="text-5xl md:text-7xl font-bold text-zinc-900 italic tracking-tighter uppercase mb-4">Sofás</h1>
+            <p data-aos="fade-up" data-aos-delay="200" class="text-zinc-500 text-sm md:text-lg font-medium leading-relaxed italic">
+                El corazón de tu hogar, diseñado para el descanso máximo y fabricado con materiales premium en Cuba.
+            </p>
+            <div data-aos="zoom-in" data-aos-delay="400" class="h-1 w-20 bg-amber-600 mx-auto mt-6 rounded-full"></div>
         </div>
     </header>
 
-    <section class="py-20 max-w-7xl mx-auto px-6">
-        <div id="sofas-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+    <section class="py-12 md:py-20 max-w-7xl mx-auto px-4">
+        <div id="sofas-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             </div>
     </section>
 
-    <footer class="bg-zinc-900 text-white py-12 text-center">
-        <p class="text-zinc-500 text-sm">&copy; 2026 ARGON Carpintería - La Habana, Cuba.</p>
+    <footer class="bg-zinc-900 text-zinc-500 py-10 text-center text-[10px] font-bold uppercase tracking-[0.2em]">
+        &copy; 2026 ARGON Carpintería - Confort que inspira
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({
-            duration: 1000,
-            once: true,
-            offset: 50
-        });
+        AOS.init({ duration: 800, once: true });
 
-        // Función para la vibración háptica
         function darVibracion() {
-            if (window.navigator && window.navigator.vibrate) {
-                window.navigator.vibrate(10);
-            }
+            if (navigator.vibrate) navigator.vibrate(15);
         }
 
-        // Lista de sofás actualizada
         const sofas = [
-            { nombre: "Conjunto Minimalista Gris", img: "sofa-gris.png", local: true }, // Imagen local generada
-            { nombre: "Sofá Nórdico Minimalista", img: "1550254478-ead40cd82477" },
-            { nombre: "Sofá Tres Plazas Gris", img: "1493663284031-b7e3aefcae8e" },
-            { nombre: "Chaise Longue Moderno", img: "1540518614846-7eded433c457" },
-            { nombre: "Sofá Terciopelo Azul", img: "1567016432779-094069958ea5" },
-            { nombre: "Sofá Vintage de Cuero", img: "1512331283953-19967202267a" },
-            { nombre: "Sofá Modular Crema", img: "1549187774-b4e9b0445b41" },
-            { nombre: "Sofá Líneas Rectas", img: "1551133990-790176317424" },
-            { nombre: "Sofá Contemporáneo", img: "1634712282287-14ed57b9cc89" },
-            { nombre: "Sofá Madera y Lino", img: "1616627686001-f25492461022" },
-            { nombre: "Sofá Esquinero Familiar", img: "1605884827083-048739962a9a" },
-            { nombre: "Sillón Relax Argon", img: "1511967728237-4d64f0283921" },
-            { nombre: "Sofá Estilo Parisino", img: "1484101403633-562f891dc89a" },
-            { nombre: "Sofá Espacios Pequeños", img: "1505691723518-36a5ac3be353" },
-            { nombre: "Diván de Lujo", img: "1615529182904-14819c35db37" },
-            { nombre: "Sofá Cuero Envejecido", img: "1540574163026-643ea20ade25" },
-            { nombre: "Sofá Capitoné Moderno", img: "1629123014802-53691522858b" },
-            { nombre: "Sofá Estilo Japandi", img: "1583847268964-b28dc8f51f92" },
-            { nombre: "Sofá Escandinavo", img: "1524758631624-e2822e304c36" },
-            { nombre: "Sofá Imperial Argon", img: "1519947486511-46149fa0a254" }
+            { nombre: "Victoria", img: "juego-de-sala-victoria-gris.png", local: true },
+            { nombre: "Amaretto", img: "juego-de-sala-amaretto-estandar.png", local: true },
+            { nombre: "Vanguardia", img: "juego-de-sala-vanguardia-gris.png", local: true },
+            { nombre: "Glamour", img: "juego-de-sala-glamour-gris-oscuro.png", local: true },
+            { nombre: "Contemporaneo", img: "juego-de-sala-contemporáneo-gris.png", local: true },
+            { nombre: "Prestigio", img: "juego-de-sala-prestigio-negro.png", local: true },
+            { nombre: "Confort", img: "juego-de-sala-confort-cafe.png", local: true },
+            { nombre: "Oasis", img: "juego-de-sala-oasis-gris.png", local: true },
+            { nombre: "Zafiro", img: "juego-de-sala-zafiro.png", local: true },
+            // CORREGIDO: Asegurado nombre "Chesterfield"
+            { nombre: "Chesterfield", img: "juego-de-sala-chesterfield-negro.png", local: true },
+            { nombre: "Horizonte", img: "juego-de-sala-horizonte-gris.png", local: true },
+            { nombre: "Habana Loft", img: "juego-de-sala-habana-loft-gris.png", local: true },
+            { nombre: "Versalles", img: "juego-de-sala-versalles-oscuro.png", local: true },
+            { nombre: "Armonia", img: "juego-de-sala-armonia-azul-brillante.png", local: true },
+            { nombre: "Urbana", img: "juego-de-sala-urbana-gris-oscuro.png", local: true }
         ];
 
         const container = document.getElementById('sofas-grid');
-        let htmlContent = "";
+        
+        container.innerHTML = sofas.map((s, index) => {
+            const imgUrl = s.local ? s.img : `https://images.unsplash.com/photo-${s.img}?q=80&w=800`;
+            const imgParam = imgUrl.replace(/&/g, '|');
+            const delay = (index % 3) * 100;
 
-        sofas.forEach((s, index) => {
-            // Determinar la URL de la imagen
-            const imgFullUrl = s.local ? s.img : `https://images.unsplash.com/photo-${s.img}?q=80&w=800`;
-            const imgDisplayUrl = s.local ? s.img : `https://images.unsplash.com/photo-${s.img}?q=80&w=600`;
-            
-            const imgParam = imgFullUrl.replace(/&/g, '|');
-            const delay = (index % 3) * 150;
-
-            htmlContent += `
-            <div data-aos="fade-up" data-aos-delay="${delay}" 
-                 onmousedown="darVibracion()" 
-                 class="tap-feedback bg-white rounded-[2.5rem] shadow-lg overflow-hidden border border-zinc-100 group hover:shadow-2xl transition-all duration-500 cursor-pointer">
-                <a href="detalles-muebles.html?nombre=${encodeURIComponent(s.nombre)}&img=${imgParam}" class="block relative overflow-hidden h-80">
-                    <img src="${imgDisplayUrl}" 
-                         alt="${s.nombre}" 
-                         class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
-                    <div class="absolute inset-0 bg-zinc-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center backdrop-blur-[2px] p-6 text-center">
-                        <span class="bg-white text-zinc-900 px-8 py-3 rounded-full font-bold shadow-xl italic transform translate-y-4 group-hover:translate-y-0 transition-all">Ver y Cotizar</span>
-                        <p class="text-white text-sm mt-3 opacity-90">Personaliza telas y medidas</p>
+            return `
+            <div data-aos="fade-up" data-aos-delay="${delay}" class="group">
+                <div class="tap-feedback bg-white rounded-[2.5rem] shadow-sm hover:shadow-2xl border border-zinc-100 overflow-hidden transition-all duration-500 cursor-pointer" 
+                     onclick="darVibracion(); location.href='detalles-muebles.html?nombre=${encodeURIComponent('Juego de Sala ' + s.nombre)}&img=${imgParam}'">
+                    
+                    <div class="relative h-72 overflow-hidden">
+                        <img src="${imgUrl}" alt="${s.nombre}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <div class="absolute inset-0 overlay-sofia opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                        
+                        <div class="absolute bottom-6 left-0 right-0 flex justify-center translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                            <span class="bg-white/90 backdrop-blur px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">Personalizar</span>
+                        </div>
                     </div>
-                </a>
-                <div class="p-8 text-center">
-                    <h3 class="text-2xl font-bold text-zinc-800 italic uppercase tracking-tight leading-tight">${s.nombre}</h3>
-                    <div class="w-12 h-0.5 bg-amber-600/30 mx-auto mt-4 group-hover:w-24 transition-all duration-500"></div>
+
+                    <div class="p-6 text-center">
+                        <span class="text-[9px] font-black uppercase tracking-[0.3em] text-amber-700 block mb-1">Colección 2026</span>
+                        <h3 class="text-xl font-bold text-zinc-800 italic uppercase leading-tight group-hover:text-amber-900 transition-colors">
+                            ${s.nombre}
+                        </h3>
+                    </div>
                 </div>
             </div>`;
-        });
-
-        container.innerHTML = htmlContent;
+        }).join('');
     </script>
 </body>
 </html>
