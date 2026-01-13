@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#92400e">
-    <title>ARGON | Sofás</title>
+    <title>ARGON | Muebles</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -47,7 +47,7 @@
 
     <header class="pt-32 pb-12 bg-zinc-100 text-center relative overflow-hidden">
         <div class="max-w-3xl mx-auto px-6 relative z-10">
-            <h1 data-aos="fade-down" class="text-5xl md:text-7xl font-bold text-zinc-900 italic tracking-tighter uppercase mb-4">Sofás</h1>
+            <h1 data-aos="fade-down" class="text-5xl md:text-7xl font-bold text-zinc-900 italic tracking-tighter uppercase mb-4">Muebles</h1>
             <p data-aos="fade-up" data-aos-delay="200" class="text-zinc-500 text-sm md:text-lg font-medium leading-relaxed italic">
                 El corazón de tu hogar, diseñado para el descanso máximo y fabricado con materiales premium en Cuba.
             </p>
@@ -56,7 +56,7 @@
     </header>
 
     <section class="py-12 md:py-20 max-w-7xl mx-auto px-4">
-        <div id="sofas-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div id="muebles-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             </div>
     </section>
 
@@ -72,55 +72,82 @@
             if (navigator.vibrate) navigator.vibrate(15);
         }
 
-        const sofas = [
-            { nombre: "Victoria", img: "juego-de-sala-victoria-gris.png", local: true },
-            { nombre: "Amaretto", img: "juego-de-sala-amaretto-estandar.png", local: true },
-            { nombre: "Vanguardia", img: "juego-de-sala-vanguardia-gris.png", local: true },
-            { nombre: "Glamour", img: "juego-de-sala-glamour-gris-oscuro.png", local: true },
-            { nombre: "Contemporaneo", img: "juego-de-sala-contemporáneo-gris.png", local: true },
-            { nombre: "Prestigio", img: "juego-de-sala-prestigio-negro.png", local: true },
-            { nombre: "Confort", img: "juego-de-sala-confort-cafe.png", local: true },
-            { nombre: "Oasis", img: "juego-de-sala-oasis-gris.png", local: true },
-            { nombre: "Zafiro", img: "juego-de-sala-zafiro.png", local: true },
-            // CORREGIDO: Asegurado nombre "Chesterfield"
-            { nombre: "Chesterfield", img: "juego-de-sala-chesterfield-negro.png", local: true },
-            { nombre: "Horizonte", img: "juego-de-sala-horizonte-gris.png", local: true },
-            { nombre: "Habana Loft", img: "juego-de-sala-habana-loft-gris.png", local: true },
-            { nombre: "Versalles", img: "juego-de-sala-versalles-oscuro.png", local: true },
-            { nombre: "Armonia", img: "juego-de-sala-armonia-azul-brillante.png", local: true },
-            { nombre: "Urbana", img: "juego-de-sala-urbana-gris-oscuro.png", local: true }
+        // Lista completa de 26 muebles (15 originales + 11 nuevos)
+        const muebles = [
+            { nombre: "Victoria", img: "juego-de-sala-victoria-gris.png" },
+            { nombre: "Amaretto", img: "juego-de-sala-amaretto-estandar.png" },
+            { nombre: "Vanguardia", img: "juego-de-sala-vanguardia-gris.png" },
+            { nombre: "Glamour", img: "juego-de-sala-glamour-gris-oscuro.png" },
+            { nombre: "Contemporaneo", img: "juego-de-sala-contemporáneo-gris.png" },
+            { nombre: "Prestigio", img: "juego-de-sala-prestigio-negro.png" },
+            { nombre: "Confort", img: "juego-de-sala-confort-cafe.png" },
+            { nombre: "Oasis", img: "juego-de-sala-oasis-gris.png" },
+            { nombre: "Zafiro", img: "juego-de-sala-zafiro.png" },
+            { nombre: "Chesterfield", img: "juego-de-sala-chesterfield-negro.png" },
+            { nombre: "Horizonte", img: "juego-de-sala-horizonte-gris.png" },
+            { nombre: "Habana Loft", img: "juego-de-sala-habana-loft-gris.png" },
+            { nombre: "Versalles", img: "juego-de-sala-versalles-oscuro.png" },
+            { nombre: "Armonia", img: "juego-de-sala-armonia-azul-brillante.png" },
+            { nombre: "Urbana", img: "juego-de-sala-urbana-gris-oscuro.png" },
+            // Nuevos añadidos para completar 26
+            { nombre: "Baron", img: "juego-de-sala-baron.png" },
+            { nombre: "Diamante", img: "juego-de-sala-diamante.png" },
+            { nombre: "Estelar", img: "juego-de-sala-estelar.png" },
+            { nombre: "Imperial", img: "juego-de-sala-imperial.png" },
+            { nombre: "Maximus", img: "juego-de-sala-maximus.png" },
+            { nombre: "Milan", img: "juego-de-sala-milan.png" },
+            { nombre: "Platinum", img: "juego-de-sala-platinum.png" },
+            { nombre: "Royale", img: "juego-de-sala-royale.png" },
+            { nombre: "Cobalto", img: "juego-de-sala-cobalto.png" },
+            { nombre: "Zenit", img: "juego-de-sala-zenit.png" },
+            { nombre: "Elite", img: "juego-de-sala-elite.png" }
         ];
 
-        const container = document.getElementById('sofas-grid');
-        
-        container.innerHTML = sofas.map((s, index) => {
-            const imgUrl = s.local ? s.img : `https://images.unsplash.com/photo-${s.img}?q=80&w=800`;
-            const imgParam = imgUrl.replace(/&/g, '|');
-            const delay = (index % 3) * 100;
+        function renderMuebles() {
+            const container = document.getElementById('muebles-grid');
+            if(!container) return;
 
-            return `
-            <div data-aos="fade-up" data-aos-delay="${delay}" class="group">
-                <div class="tap-feedback bg-white rounded-[2.5rem] shadow-sm hover:shadow-2xl border border-zinc-100 overflow-hidden transition-all duration-500 cursor-pointer" 
-                     onclick="darVibracion(); location.href='detalles-muebles.html?nombre=${encodeURIComponent('Juego de Sala ' + s.nombre)}&img=${imgParam}'">
-                    
-                    <div class="relative h-72 overflow-hidden">
-                        <img src="${imgUrl}" alt="${s.nombre}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                        <div class="absolute inset-0 overlay-sofia opacity-40 group-hover:opacity-60 transition-opacity"></div>
+            container.innerHTML = muebles.map((s, index) => {
+                const imgUrl = s.img;
+                const imgParam = imgUrl.replace(/&/g, '|');
+                const delay = (index % 3) * 100;
+
+                return `
+                <div data-aos="fade-up" data-aos-delay="${delay}" class="group">
+                    <div class="tap-feedback bg-white rounded-[2.5rem] shadow-sm hover:shadow-2xl border border-zinc-100 overflow-hidden transition-all duration-500 cursor-pointer" 
+                         onclick="darVibracion(); location.href='detalles-muebles.html?nombre=${encodeURIComponent('Juego de Sala ' + s.nombre)}&img=${imgParam}'">
                         
-                        <div class="absolute bottom-6 left-0 right-0 flex justify-center translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                            <span class="bg-white/90 backdrop-blur px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">Personalizar</span>
+                        <div class="relative h-72 overflow-hidden">
+                            <img src="${imgUrl}" alt="${s.nombre}" 
+                                 onerror="this.src='https://via.placeholder.com/800x600?text=Imagen+No+Encontrada'"
+                                 class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <div class="absolute inset-0 overlay-sofia opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                            
+                            <div class="absolute bottom-6 left-0 right-0 flex justify-center translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                <span class="bg-white/90 backdrop-blur px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">Personalizar</span>
+                            </div>
+                        </div>
+
+                        <div class="p-6 text-center">
+                            <span class="text-[9px] font-black uppercase tracking-[0.3em] text-amber-700 block mb-1">Colección 2026</span>
+                            <h3 class="text-xl font-bold text-zinc-800 italic uppercase leading-tight group-hover:text-amber-900 transition-colors">
+                                ${s.nombre}
+                            </h3>
                         </div>
                     </div>
+                </div>`;
+            }).join('');
 
-                    <div class="p-6 text-center">
-                        <span class="text-[9px] font-black uppercase tracking-[0.3em] text-amber-700 block mb-1">Colección 2026</span>
-                        <h3 class="text-xl font-bold text-zinc-800 italic uppercase leading-tight group-hover:text-amber-900 transition-colors">
-                            ${s.nombre}
-                        </h3>
-                    </div>
-                </div>
-            </div>`;
-        }).join('');
+            // Refrescar AOS para que las 26 cartas sean visibles
+            setTimeout(() => {
+                AOS.refresh();
+            }, 100);
+        }
+
+        // Ejecutar siempre al cargar o volver atrás
+        window.addEventListener('pageshow', function(event) {
+            renderMuebles();
+        });
     </script>
 </body>
 </html>
