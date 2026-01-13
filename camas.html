@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#92400e">
+    <title>ARGON | Colección Camas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Outfit', sans-serif; scroll-behavior: smooth; font-size: 0.95rem; }
+        .tap-feedback { transition: transform 0.1s ease, opacity 0.1s ease; touch-action: manipulation; }
+        .tap-feedback:active { transform: scale(0.96); opacity: 0.9; }
+        .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+        .glass-header { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
+    </style>
+</head>
+<body class="bg-zinc-50 text-zinc-900">
+
+    <nav class="fixed w-full z-50 glass-header border-b border-zinc-100">
+        <div class="max-w-[95%] mx-auto px-4 py-4 flex justify-between items-center">
+            <button onclick="history.back()" class="tap-feedback flex items-center gap-2 text-zinc-800 font-bold">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Volver
+            </button>
+            <div class="text-center">
+                <span class="block text-[10px] font-bold uppercase tracking-[0.3em] text-amber-700">Colección</span>
+                <span class="text-xl font-black tracking-tighter italic">CAMAS</span>
+            </div>
+            <div class="w-10"></div> 
+        </div>
+    </nav>
+
+    <header class="pt-32 pb-12 px-6 text-center">
+        <h1 data-aos="fade-up" class="text-4xl font-bold text-zinc-800 italic mb-2">Descanso de Lujo</h1>
+        <p data-aos="fade-up" data-aos-delay="100" class="text-zinc-500 max-w-md mx-auto">Estructuras sólidas en madera noble con tapicería artesanal personalizada.</p>
+    </header>
+
+    <section class="max-w-7xl mx-auto px-4 pb-24">
+        <div id="camas-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            </div>
+    </section>
+
+    <footer class="bg-zinc-900 text-white py-10 text-center">
+        <p class="text-zinc-500 text-xs">&copy; 2026 ARGON Carpintería - Cuba.</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Inicialización de AOS
+        AOS.init({ duration: 800, once: true });
+
+        // Generamos el array de 26 camas
+        const camas = [];
+        const totalFotos = 26;
+
+        for (let i = 1; i <= totalFotos; i++) {
+            camas.push({
+                nombre: `Modelo Argon C-${i}`, 
+                precio: 1200, 
+                imagen: `camas-${i}.png` 
+            });
+        }
+
+        function renderCamas() {
+            const grid = document.getElementById('camas-grid');
+            if(!grid) return;
+
+            // Limpiamos el grid antes de renderizar para evitar duplicados o errores de carga
+            grid.innerHTML = camas.map(c => `
+                <div data-aos="fade-up" class="bg-white rounded-3xl shadow-sm overflow-hidden border border-zinc-100 group">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="${c.imagen}" alt="${c.nombre}" 
+                             onerror="this.src='https://via.placeholder.com/400x300?text=Cama+Próximamente'"
+                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-5 text-center">
+                        <h3 class="text-md font-bold text-zinc-800 line-clamp-1 uppercase italic">${c.nombre}</h3>
+                        <p class="text-lg font-black text-amber-900 mt-2">${c.precio.toLocaleString()} <small class="text-[10px] text-zinc-400 font-normal">USD</small></p>
+                        <button onclick="irAPersonalizar('${c.nombre}', ${c.precio}, '${c.imagen}')" 
+                            class="tap-feedback mt-4 w-full bg-zinc-900 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-amber-800 transition-colors">
+                            Personalizar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Refrescamos AOS para que detecte todos los elementos nuevos, especialmente al volver atrás
+            setTimeout(() => {
+                AOS.refresh();
+            }, 100);
+        }
+
+        function irAPersonalizar(nombre, precio, imagen) {
+            if (navigator.vibrate) navigator.vibrate(50);
+            const productoSeleccionado = { nombre, precio, imagen };
+            localStorage.setItem('argon_temp_product', JSON.stringify(productoSeleccionado));
+            window.location.href = 'detalles-muebles.html';
+        }
+
+        // Usamos 'pageshow' en lugar de 'onload' para garantizar que se ejecute 
+        // siempre, incluso cuando se usa el botón "Atrás" del navegador.
+        window.addEventListener('pageshow', function(event) {
+            renderCamas();
+        });
+    </script>
+</body>
+</html>
