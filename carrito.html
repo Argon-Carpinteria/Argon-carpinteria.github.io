@@ -27,7 +27,7 @@
         <div class="max-w-2xl mx-auto">
             <div class="flex justify-between items-center mb-4">
                 <span class="text-zinc-400 font-bold uppercase text-xs tracking-widest">Total Estimado</span>
-                <span id="total-final" class="text-2xl font-black text-amber-900">0 CUP</span>
+                <span id="total-final" class="text-2xl font-black text-amber-900">0 USD</span>
             </div>
             <button onclick="enviarWhatsApp()" class="w-full bg-zinc-900 text-white py-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all flex justify-center items-center gap-3">
                 <span>Finalizar por WhatsApp</span>
@@ -51,7 +51,7 @@
                         </svg>
                     </div>
                     <p class="text-zinc-400 italic">No hay muebles en tu carrito</p>
-                    <a href="index.html" class="mt-6 inline-block text-amber-800 font-bold uppercase text-xs tracking-widest border-b-2 border-amber-800">Ver Catálogo</a>
+                    <a href="sofas.html" class="mt-6 inline-block text-amber-800 font-bold uppercase text-xs tracking-widest border-b-2 border-amber-800">Ver Catálogo</a>
                 </div>`;
                 document.getElementById('footer-carrito').classList.add('hidden');
                 return;
@@ -74,17 +74,27 @@
                                 </svg>
                             </button>
                         </div>
+                        
                         <div class="text-[10px] text-zinc-500 mt-1 uppercase font-bold tracking-tighter leading-relaxed">
                             Madera: <span class="text-amber-800">${item.madera}</span><br>
                             Tela: <span class="text-amber-800">${item.tela}</span> • 
                             Color: <span class="text-amber-800">${item.color}</span>
                         </div>
-                        <div class="mt-2 font-black text-zinc-900 text-lg">${item.precio.toLocaleString()} CUP</div>
+
+                        <div class="mt-2 inline-flex items-center gap-1 bg-amber-50 px-2 py-1 rounded-md border border-amber-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span class="text-[9px] font-black uppercase text-amber-800">${item.provincia || 'S/N'}</span>
+                        </div>
+
+                        <div class="mt-2 font-black text-zinc-900 text-lg">${item.precio.toLocaleString('en-US')} USD</div>
                     </div>
                 </div>`;
             });
 
-            document.getElementById('total-final').innerText = total.toLocaleString() + " CUP";
+            document.getElementById('total-final').innerText = total.toLocaleString('en-US') + " USD";
         }
 
         function eliminarItem(index) {
@@ -110,28 +120,23 @@
 
             carrito.forEach((item, i) => {
                 mensaje += `${i+1}. *${item.nombre}*\n`;
-                mensaje += `   - Madera: ${item.madera}\n`;
-                mensaje += `   - Tela: ${item.tela}\n`;
-                mensaje += `   - Color: ${item.color}\n`;
-                mensaje += `   - Precio: ${item.precio.toLocaleString()} CUP\n\n`;
+                mensaje += `   📍 Provincia: ${item.provincia}\n`;
+                mensaje += `   🪵 Madera: ${item.madera}\n`;
+                mensaje += `   🧵 Tela: ${item.tela}\n`;
+                mensaje += `   🎨 Color: ${item.color}\n`;
+                mensaje += `   💵 Precio: ${item.precio.toLocaleString('en-US')} USD\n\n`;
                 total += item.precio;
             });
 
-            mensaje += `*TOTAL ESTIMADO: ${total.toLocaleString()} CUP*`;
+            mensaje += `*TOTAL ESTIMADO: ${total.toLocaleString('en-US')} USD*\n\n`;
+            mensaje += `_Nota: "Los muebles son por encargos en un plazo de 20 días hechos desde cero"_`;
             
             const telefono = "5358748550";
             const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
             
-            // 1. Abrimos WhatsApp
             window.open(url, '_blank');
-
-            // 2. Limpiamos el carrito automáticamente
             localStorage.removeItem('argon_cart');
-
-            // 3. Recargamos la interfaz para que salga el mensaje de carrito vacío
-            setTimeout(() => {
-                renderizarCarrito();
-            }, 1500);
+            setTimeout(() => { renderizarCarrito(); }, 1500);
         }
 
         window.onload = renderizarCarrito;
