@@ -3,109 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#92400e">
-    <title>ARGON | Colección Camas</title>
+    <meta name="theme-color" content="#050505">
+    <title>ARGON | Nocturne Collection</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;600;900&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
-        body { font-family: 'Outfit', sans-serif; scroll-behavior: smooth; font-size: 0.95rem; }
-        .tap-feedback { transition: transform 0.1s ease, opacity 0.1s ease; touch-action: manipulation; }
-        .tap-feedback:active { transform: scale(0.96); opacity: 0.9; }
-        .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
-        .glass-header { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
-        
-        /* Estilo para el botón flotante sobre la imagen */
-        .overlay-sofia {
-            background: linear-gradient(to top, rgba(24, 24, 27, 0.8) 0%, rgba(24, 24, 27, 0) 60%);
+        :root { --cobre: #b45309; --fondo: #050505; }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: var(--fondo); 
+            color: white; 
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Nav Minimalista */
+        .nav-minimal {
+            mix-blend-mode: difference;
+            padding: 1.5rem 2rem;
+            z-index: 100;
+        }
+
+        /* Spotlight de seguimiento */
+        .spotlight {
+            position: fixed;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(180, 83, 9, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        /* Grid Asimétrico Monolith */
+        .grid-custom {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 4rem 2rem;
+        }
+
+        /* Variaciones de Monolitos (Enfoque Horizontal para Camas) */
+        .item-hero { grid-column: span 12; height: 85vh; }
+        .item-split { grid-column: span 6; height: 75vh; }
+        .item-inset { grid-column: span 8; height: 65vh; margin: 0 16.6%; }
+
+        @media (max-width: 1024px) {
+            .item-hero, .item-split, .item-inset { 
+                grid-column: span 12; 
+                height: 70vh; 
+                margin: 0;
+            }
+        }
+
+        /* Estética Monolito */
+        .monolith-item {
+            position: relative;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+
+        .monolith-item:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.01);
+        }
+
+        .text-reveal {
+            clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+            transition: clip-path 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .monolith-item:hover .text-reveal {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .img-parallax {
+            width: 100%;
+            height: 140%;
+            object-fit: cover;
+            position: absolute;
+            top: -20%;
+            will-change: transform;
         }
     </style>
 </head>
-<body class="bg-zinc-50 text-zinc-900">
+<body class="antialiased">
 
-    <nav class="fixed w-full z-50 glass-header border-b border-zinc-100">
-        <div class="max-w-[95%] mx-auto px-4 py-4 flex justify-between items-center">
-            <button onclick="history.back()" class="tap-feedback flex items-center gap-2 text-zinc-800 font-bold">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                Volver
-            </button>
-            <div class="text-center">
-                <span class="block text-[10px] font-bold uppercase tracking-[0.3em] text-amber-700">Colección</span>
-                <span class="text-xl font-black tracking-tighter italic">CAMAS</span>
-            </div>
-            <div class="w-10"></div> 
+    <div class="spotlight" id="spotlight"></div>
+
+    <nav class="fixed top-0 w-full nav-minimal flex justify-between items-center">
+        <button onclick="history.back()" class="group flex items-center gap-4">
+            <span class="text-[10px] tracking-[0.5em] font-black uppercase hover:text-orange-600 transition-colors">← Regresar</span>
+        </button>
+        <div class="text-right">
+            <h2 class="text-xl font-black italic tracking-tighter leading-none uppercase">Nocturne</h2>
+            <p class="text-[8px] tracking-[0.4em] text-stone-600 uppercase mt-1">Colección de Descanso</p>
         </div>
     </nav>
 
-    <header class="pt-32 pb-12 px-6 text-center">
-        <h1 data-aos="fade-up" class="text-4xl font-bold text-zinc-800 italic mb-2">Descanso de Lujo</h1>
-        <p data-aos="fade-up" data-aos-delay="100" class="text-zinc-500 max-w-md mx-auto">Estructuras sólidas en madera noble con tapicería artesanal personalizada.</p>
+    <header class="h-screen flex flex-col justify-center items-center px-6 text-center relative overflow-hidden">
+        <h1 class="text-[18vw] font-black leading-[0.8] tracking-tighter uppercase italic opacity-[0.03] select-none absolute pointer-events-none">
+            Dream
+        </h1>
+        <div class="z-10" data-aos="fade-up">
+            <p class="text-orange-600 font-bold tracking-[1em] text-[10px] uppercase mb-6">El Arte del Reposo</p>
+            <h2 class="text-6xl md:text-9xl font-light tracking-tight leading-none">Dormir es un <br><span class="font-black italic">Privilegio.</span></h2>
+            <p class="mt-10 text-stone-500 font-light max-w-lg mx-auto text-sm md:text-base tracking-wide">
+                Ingeniería del descanso envuelta en maderas preciosas. Piezas diseñadas para trascender generaciones.
+            </p>
+        </div>
     </header>
 
-    <section class="max-w-7xl mx-auto px-4 pb-24">
-        <div id="camas-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <main class="max-w-[1500px] mx-auto px-6 pb-60">
+        <div id="camas-grid" class="grid-custom">
             </div>
-    </section>
+    </main>
 
-    <footer class="bg-zinc-900 text-white py-10 text-center">
-        <p class="text-zinc-500 text-xs">&copy; 2026 ARGON Carpintería - Cuba.</p>
+    <footer class="py-32 border-t border-white/5 text-center bg-[#030303]">
+        <div class="mb-12">
+            <span class="text-5xl font-black italic tracking-tighter opacity-10">ARGON</span>
+        </div>
+        <p class="text-stone-700 text-[9px] tracking-[0.8em] uppercase">Luxury Sleep Systems &bull; La Habana</p>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 800, once: true });
+        AOS.init({ duration: 1200, once: true });
 
-        const camas = [];
-        const totalFotos = 26;
-
-        for (let i = 1; i <= totalFotos; i++) {
-            camas.push({
-                nombre: `Camas-${i}`, 
-                precio: 1200, 
-                imagen: `camas-${i}.png` 
-            });
-        }
+        // Spotlight Follower
+        const spot = document.getElementById('spotlight');
+        document.addEventListener('mousemove', e => {
+            spot.style.left = e.clientX + 'px';
+            spot.style.top = e.clientY + 'px';
+        });
 
         function renderCamas() {
-            const grid = document.getElementById('camas-grid');
-            if(!grid) return;
+            const container = document.getElementById('camas-grid');
+            // Patrón asimétrico para camas (más horizontales)
+            const layoutPattern = ['item-hero', 'item-split', 'item-split', 'item-inset'];
+            
+            let html = "";
+            for (let i = 1; i <= 26; i++) {
+                const layoutClass = layoutPattern[(i - 1) % 4];
+                const nombre = `Argon Nocturne 0${i}`;
+                const img = `camas-${i}.png`;
+                const precio = 1450 + (i * 15);
 
-            grid.innerHTML = camas.map(c => `
-                <div data-aos="fade-up" class="bg-white rounded-3xl shadow-sm overflow-hidden border border-zinc-100 group cursor-pointer" 
-                     onclick="irAPersonalizar('${c.nombre}', ${c.precio}, '${c.imagen}')">
-                    <div class="relative overflow-hidden h-64">
-                        <img src="${c.imagen}" alt="${c.nombre}" 
-                             onerror="this.src='https://via.placeholder.com/400x300?text=Cama+Próximamente'"
-                             class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                html += `
+                <article class="${layoutClass} monolith-item group" data-aos="fade-up" 
+                         onclick="irADetalle('${nombre}', ${precio}, '${img}')">
+                    
+                    <div class="w-full h-full overflow-hidden relative rounded-sm bg-stone-900">
+                        <img src="${img}" class="img-parallax" 
+                             onerror="this.src='https://via.placeholder.com/1200x800/111/333?text=ARGON+SLEEP'"
+                             alt="${nombre}">
                         
-                        <div class="absolute inset-0 overlay-sofia opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
-                        <div class="absolute inset-0 flex items-end justify-center pb-8 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                            <span class="bg-white text-zinc-900 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-xl">Personalizar</span>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-90 transition-opacity duration-700"></div>
+                        
+                        <div class="absolute bottom-12 left-10 text-reveal pr-10">
+                            <div class="flex items-center gap-4 mb-3">
+                                <p class="text-orange-500 font-bold text-[9px] tracking-[0.5em] uppercase">Ref. AC-0${i}</p>
+                                <span class="h-px w-8 bg-orange-600/30"></span>
+                                <p class="text-white/40 font-bold text-[9px] tracking-[0.5em] uppercase">$${precio.toLocaleString()}</p>
+                            </div>
+                            <h3 class="text-4xl md:text-6xl font-black italic uppercase leading-none mb-6">${nombre}</h3>
+                            <div class="flex items-center gap-6">
+                                <span class="text-[10px] font-bold tracking-[0.3em] uppercase opacity-60">Solicitar Medidas</span>
+                                <span class="h-px w-12 bg-orange-600 transition-all group-hover:w-24"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="p-5 text-center">
-                        <h3 class="text-md font-bold text-zinc-800 line-clamp-1 uppercase italic group-hover:text-amber-700 transition-colors">${c.nombre}</h3>
-                        <p class="text-lg font-black text-amber-900 mt-2">${c.precio.toLocaleString()} <small class="text-[10px] text-zinc-400 font-normal">USD</small></p>
-                    </div>
-                </div>
-            `).join('');
-
-            setTimeout(() => {
-                AOS.refresh();
-            }, 100);
+                </article>
+                `;
+            }
+            container.innerHTML = html;
         }
 
-        function irAPersonalizar(nombre, precio, imagen) {
-            if (navigator.vibrate) navigator.vibrate(50);
+        // Parallax Engine
+        window.addEventListener('scroll', () => {
+            const items = document.querySelectorAll('.img-parallax');
+            items.forEach(img => {
+                const rect = img.parentElement.getBoundingClientRect();
+                if(rect.top < window.innerHeight && rect.bottom > 0) {
+                    img.style.transform = `translateY(${rect.top * 0.08}px) scale(1.1)`;
+                }
+            });
+        });
+
+        function irADetalle(nombre, precio, imagen) {
+            if (navigator.vibrate) navigator.vibrate(20);
             const productoSeleccionado = { nombre, precio, imagen };
             localStorage.setItem('argon_temp_product', JSON.stringify(productoSeleccionado));
-            window.location.href = 'detalles-muebles.html';
+            
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                window.location.href = 'detalles-muebles.html';
+            }, 500);
         }
 
-        window.addEventListener('pageshow', function(event) {
-            renderCamas();
-        });
+        document.addEventListener('DOMContentLoaded', renderCamas);
     </script>
 </body>
 </html>

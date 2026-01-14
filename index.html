@@ -3,179 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#92400e">
-    <title>ARGON | Carpintería de Excelencia</title>
+    <meta name="theme-color" content="#050505">
+    <title>ARGON | Mobiliario de Autor</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;600;900&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
-        body { font-family: 'Outfit', sans-serif; scroll-behavior: smooth; font-size: 0.95rem; }
-        #panel-derecho { 
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s; 
-            transform: translateX(100%); visibility: hidden; pointer-events: none;
+        :root { --cobre: #b45309; --fondo: #050505; }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: var(--fondo); 
+            color: white; 
+            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
-        #panel-derecho.active { transform: translateX(0); visibility: visible; pointer-events: auto; }
-        .menu-item { transition: all 0.3s ease; border-left: 0px solid #92400e; }
-        .menu-item:hover { border-left: 4px solid #92400e; padding-left: 1.5rem; background-color: #fffaf5; color: #92400e; }
-        .tap-feedback { transition: transform 0.1s ease, opacity 0.1s ease; touch-action: manipulation; }
-        .tap-feedback:active { transform: scale(0.96); opacity: 0.9; }
-        .video-docker video { top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; object-fit: cover; }
-        .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+
+        /* Nav Minimalista */
+        .nav-monolith {
+            mix-blend-mode: difference;
+            z-index: 100;
+        }
+
+        /* Spotlight de seguimiento */
+        .spotlight {
+            position: fixed;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(180, 83, 9, 0.07) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        /* Panel Lateral (Sidebar original con estética Monolith) */
+        #panel-derecho {
+            background: #080808;
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateX(100%);
+            border-left: 1px solid rgba(255,255,255,0.05);
+        }
+        #panel-derecho.active { transform: translateX(0); }
+
+        .menu-item {
+            transition: all 0.3s ease;
+            border-left: 0px solid var(--cobre);
+        }
+        .menu-item:hover {
+            border-left: 4px solid var(--cobre);
+            padding-left: 1.5rem;
+            color: var(--cobre);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .text-huge {
+            font-size: clamp(4rem, 15vw, 11rem);
+            line-height: 0.85;
+            letter-spacing: -0.05em;
+        }
+
+        .excelencia-card {
+            background: linear-gradient(145deg, #0a0a0a 0%, #050505 100%);
+            border: 1px solid rgba(255,255,255,0.03);
+        }
     </style>
 </head>
-<body class="bg-zinc-50 text-zinc-900 relative">
+<body class="antialiased">
 
-    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm">
-        <div class="max-w-[95%] mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <img src="logo.jpeg" alt="Logo ARGON" class="h-10 w-auto object-contain">
-                <span class="text-2xl font-bold tracking-tighter text-amber-900">ARGON</span>
-            </div>
-            <div class="flex items-center gap-3">
-                <div class="hidden md:flex space-x-6 text-sm font-medium italic mr-4">
-                    <a href="#inicio" class="hover:text-amber-700 transition">Inicio</a>
-                    <a href="#catalogo" class="hover:text-amber-700 transition">Lo más vendido</a>
-                </div>
-                <button onclick="abrirPanel()" class="tap-feedback bg-amber-700 text-white p-2 rounded-xl shadow-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                    </svg>
-                </button>
-            </div>
+    <div class="spotlight" id="spotlight"></div>
+
+    <nav class="fixed top-0 w-full nav-monolith flex justify-between items-center p-6 md:p-8">
+        <div class="flex items-center gap-4">
+            <img src="logo.jpeg" alt="ARGON" class="h-10 w-10 rounded-lg border border-white/10 grayscale">
+            <span class="text-2xl font-black tracking-tighter uppercase italic">ARGON</span>
         </div>
+        <button onclick="abrirPanel()" class="group flex items-center gap-4 outline-none">
+            <span class="text-[9px] font-bold uppercase tracking-[0.4em] opacity-50 group-hover:opacity-100 transition-opacity">Explorar</span>
+            <div class="space-y-1.5">
+                <div class="h-0.5 w-6 bg-white"></div>
+                <div class="h-0.5 w-4 bg-white ml-auto"></div>
+            </div>
+        </button>
     </nav>
 
-    <section id="inicio" class="relative h-[90vh] md:h-screen flex items-center justify-center overflow-hidden">
-        <div class="video-docker absolute inset-0 z-0">
-            <video class="absolute object-cover w-full h-full" autoplay muted loop playsinline preload="auto">
+    <header class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <video class="w-full h-full object-cover opacity-40 grayscale" autoplay muted loop playsinline>
                 <source src="./hero-argon.mp4" type="video/mp4">
             </video>
-            <div class="absolute inset-0 bg-black/40"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/60 to-[#050505]"></div>
         </div>
-        <div class="relative z-10 text-center text-white px-4">
-            <h1 data-aos="fade-up" class="text-4xl md:text-8xl font-bold mb-4 tracking-tighter italic">Mobiliario con Alma</h1>
-            <p data-aos="fade-up" data-aos-delay="200" class="text-lg md:text-2xl font-light mb-8 max-w-2xl mx-auto opacity-90">Diseño artesanal de alta gama en La Habana.</p>
-            <div data-aos="fade-up" data-aos-delay="400" class="flex flex-col sm:flex-row gap-3 justify-center items-center">
-                <a href="#catalogo" class="tap-feedback w-full sm:w-auto bg-amber-700 text-white px-8 py-4 rounded-full text-lg font-bold shadow-xl text-center">Ver Colección</a>
-                <a href="https://wa.me/5358748550" target="_blank" class="tap-feedback w-full sm:w-auto bg-white/10 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-full text-lg font-bold text-center">Cotizar</a>
-            </div>
+        
+        <div class="relative z-10 text-center px-6">
+            <p data-aos="fade-up" class="text-orange-600 font-bold tracking-[1em] text-[10px] uppercase mb-8">La Habana &bull; Cuba</p>
+            <h1 data-aos="fade-up" data-aos-delay="200" class="text-huge font-black italic uppercase">
+                Mobiliario <br><span class="font-light tracking-tighter">con Alma.</span>
+            </h1>
         </div>
-    </section>
+    </header>
 
-    <section id="catalogo" class="py-16 max-w-7xl mx-auto px-4">
-        <div class="text-center mb-10" data-aos="fade-up">
-            <h2 class="text-3xl md:text-5xl font-bold text-zinc-800 mb-3 italic">Lo más vendido</h2>
-            <div class="h-1 w-20 bg-amber-700 mx-auto rounded-full"></div>
+    <main class="relative z-10 max-w-7xl mx-auto px-6 py-32">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-1">
+            <article class="excelencia-card p-12" data-aos="fade-up">
+                <h3 class="text-xl font-black uppercase tracking-widest mb-4">Madera de Autor</h3>
+                <p class="text-stone-500 font-light leading-relaxed italic">Curación natural para piezas destinadas a perdurar generaciones.</p>
+            </article>
+            <article class="excelencia-card p-12" data-aos="fade-up" data-aos-delay="100">
+                <h3 class="text-xl font-black uppercase tracking-widest mb-4">A Medida</h3>
+                <p class="text-stone-500 font-light leading-relaxed italic">Cada pieza se adapta a la arquitectura y flujo de su espacio personal.</p>
+            </article>
+            <article class="excelencia-card p-12" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="text-xl font-black uppercase tracking-widest mb-4">Entrega Guante Blanco</h3>
+                <p class="text-stone-500 font-light leading-relaxed italic">Compromiso estricto de 20 días con logística especializada propia.</p>
+            </article>
         </div>
-        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            </div>
-    </section>
+    </main>
 
-    <div id="overlay" onclick="cerrarPanel()" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[110] hidden transition-opacity duration-300"></div>
+    <div id="overlay" onclick="cerrarPanel()" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[110] hidden opacity-0 transition-opacity duration-700"></div>
     
-    <div id="panel-derecho" class="fixed top-0 right-0 w-[85%] max-w-[320px] h-full bg-white z-[120] shadow-2xl p-6 overflow-y-auto">
-        <div class="flex justify-between items-center mb-8">
-            <h3 class="text-xs font-black text-zinc-400 uppercase tracking-widest">Explorar ARGON</h3>
-            <button onclick="cerrarPanel()" class="text-zinc-800 text-xl p-2">✕</button>
+    <aside id="panel-derecho" class="fixed top-0 right-0 w-[85%] max-w-[350px] h-full z-[120] p-8 overflow-y-auto">
+        <div class="flex justify-between items-center mb-10">
+            <h3 class="text-[10px] font-black text-stone-600 uppercase tracking-[0.4em]">Explorar ARGON</h3>
+            <button onclick="cerrarPanel()" class="text-white text-xl p-2 hover:text-orange-600 transition-colors">✕</button>
         </div>
         
         <nav class="flex flex-col gap-1">
-            <button onclick="filtrarDesdeMenu()" class="menu-item text-left py-3 px-4 text-xl font-bold text-zinc-800 rounded-r-xl mb-4">Inicio</button>
+            <button onclick="cerrarPanel(); window.scrollTo({top:0, behavior:'smooth'})" 
+                    class="menu-item text-left py-4 px-4 text-2xl font-black italic uppercase tracking-tighter text-white mb-6">
+                Inicio
+            </button>
             
-            <div class="mb-6">
-                <p class="px-4 text-[10px] font-bold text-amber-700 uppercase tracking-widest mb-2">Categorías</p>
-                <a href="sofas.html" class="menu-item py-3 px-4 text-lg font-bold text-zinc-800 block">Muebles de Sala</a>
-                <a href="camas.html" class="menu-item py-3 px-4 text-lg font-bold text-zinc-800 block">Camas</a>
-                <a href="aparadores.html" class="menu-item py-3 px-4 text-lg font-bold text-zinc-800 block">Aparadores</a>
-                <a href="estantes.html" class="menu-item py-3 px-4 text-lg font-bold text-zinc-800 block">Estantes</a>
-                <a href="mesas.html" class="menu-item py-3 px-4 text-lg font-bold text-zinc-800 block">Mesas</a>
-                <a href="puertas.html" class="menu-item py-3 px-4 text-lg font-bold text-zinc-800 block">Puertas</a>
-                <a href="multimuebles.html" class="menu-item py-3 px-4 text-lg font-bold text-zinc-800 block">Multimuebles</a>
+            <div class="mb-8">
+                <p class="px-4 text-[9px] font-black text-orange-600 uppercase tracking-[0.3em] mb-4">Categorías</p>
+                <a href="sofas.html" class="menu-item py-3 px-4 text-lg font-bold text-stone-200 block uppercase tracking-tight">Muebles de Sala</a>
+                <a href="camas.html" class="menu-item py-3 px-4 text-lg font-bold text-stone-200 block uppercase tracking-tight">Camas</a>
+                <a href="aparadores.html" class="menu-item py-3 px-4 text-lg font-bold text-stone-200 block uppercase tracking-tight">Aparadores</a>
+                <a href="estantes.html" class="menu-item py-3 px-4 text-lg font-bold text-stone-200 block uppercase tracking-tight">Estantes</a>
+                <a href="mesas.html" class="menu-item py-3 px-4 text-lg font-bold text-stone-200 block uppercase tracking-tight">Mesas</a>
+                <a href="puertas.html" class="menu-item py-3 px-4 text-lg font-bold text-stone-200 block uppercase tracking-tight">Puertas</a>
+                <a href="multimuebles.html" class="menu-item py-3 px-4 text-lg font-bold text-stone-200 block uppercase tracking-tight">Multimuebles</a>
             </div>
 
-            <div class="mb-8 border-t border-zinc-100 pt-6">
-                <p class="px-4 text-[10px] font-bold text-amber-700 uppercase tracking-widest mb-2">Servicios Especiales</p>
-                <a href="reparacion.html" class="menu-item py-3 px-4 text-lg font-bold text-zinc-800 block italic">🛠 Reparación</a>
+            <div class="mb-10 border-t border-white/5 pt-8">
+                <p class="px-4 text-[9px] font-black text-orange-600 uppercase tracking-[0.3em] mb-4">Servicios Especiales</p>
+                <a href="reparacion.html" class="menu-item py-3 px-4 text-lg font-bold text-orange-500/80 block italic">🛠 Reparación</a>
             </div>
         </nav>
 
-        <a href="https://wa.me/5358748550" class="flex items-center justify-center gap-2 bg-zinc-900 text-white p-4 rounded-2xl font-bold text-sm shadow-xl mt-4">
-            WhatsApp Comercial
+        <a href="https://wa.me/5358748550" class="flex items-center justify-center gap-3 bg-white text-black py-5 rounded-sm font-black text-[10px] uppercase tracking-[0.3em] shadow-2xl hover:bg-orange-600 hover:text-white transition-all">
+            WhatsApp Concierge
         </a>
-    </div>
+    </aside>
 
-    <footer class="bg-zinc-900 text-white py-10 text-center">
-        <p class="text-zinc-500 text-xs">&copy; 2026 ARGON Carpintería - Cuba.</p>
+    <footer class="py-20 text-center border-t border-white/5 bg-[#030303]">
+        <p class="text-stone-800 text-[9px] tracking-[0.8em] uppercase font-black">
+            ARGON &copy; 2026 &bull; Fine Woodwork Experience
+        </p>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 800, once: true });
+        AOS.init({ duration: 1200, once: true });
 
-        function vibrateMobile(ms = 30) {
-            if (navigator.vibrate) { navigator.vibrate(ms); }
-        }
-
-        const productos = [
-            { nombre: "Juego de Sala Confort", precio: 1000, imagen: "juego-de-sala-confort-estandar.png" },
-            { nombre: "Juego de Sala Habana Loft", precio: 1000, imagen: "juego-de-sala-habana-loft-crema-oscura.png" },
-            { nombre: "Juego de Sala Contemporaneo", precio: 750, imagen: "juego-de-sala-contemporáneo-gris.png" },
-            { nombre: "Juego de Sala Versalle", precio: 1000, imagen: "juego-de-sala-versalles-oscuro.png"}
-        ];
-
-        function renderProducts() {
-            const grid = document.getElementById('product-grid');
-            if(!grid) return;
-            grid.innerHTML = '';
-            productos.forEach((p) => {
-                grid.innerHTML += `
-                    <div data-aos="fade-up" class="bg-white rounded-3xl shadow-sm overflow-hidden border border-zinc-100 group">
-                        <div class="relative overflow-hidden h-60">
-                            <img src="${p.imagen}" loading="lazy" alt="${p.nombre}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        </div>
-                        <div class="p-5 text-center">
-                            <h3 class="text-md font-bold text-zinc-800 line-clamp-1 uppercase italic">${p.nombre}</h3>
-                            <p class="text-lg font-black text-amber-900 mt-2">${p.precio.toLocaleString()} <small class="text-[10px] text-zinc-400 font-normal">USD</small></p>
-                            <button onclick="irAPersonalizar('${p.nombre}', ${p.precio}, '${p.imagen}')" 
-                                class="tap-feedback mt-4 w-full bg-zinc-900 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-amber-800 transition-colors">
-                                Personalizar
-                            </button>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        function irAPersonalizar(nombre, precio, imagen) {
-            vibrateMobile(50);
-            const productoSeleccionado = { nombre, precio, imagen };
-            localStorage.setItem('argon_temp_product', JSON.stringify(productoSeleccionado));
-            window.location.href = 'detalles-muebles.html';
-        }
+        // Spotlight
+        const spot = document.getElementById('spotlight');
+        document.addEventListener('mousemove', e => {
+            spot.style.left = e.clientX + 'px';
+            spot.style.top = e.clientY + 'px';
+        });
 
         function abrirPanel() {
-            vibrateMobile(20);
-            document.getElementById('overlay').classList.remove('hidden');
+            if (navigator.vibrate) navigator.vibrate(20);
+            const overlay = document.getElementById('overlay');
+            overlay.classList.remove('hidden');
             setTimeout(() => {
-                document.getElementById('overlay').classList.add('opacity-100');
+                overlay.classList.add('opacity-100');
                 document.getElementById('panel-derecho').classList.add('active');
-            }, 10);
+            }, 50);
             document.body.style.overflow = 'hidden';
         }
 
         function cerrarPanel() {
             document.getElementById('panel-derecho').classList.remove('active');
             document.getElementById('overlay').classList.remove('opacity-100');
-            setTimeout(() => { document.getElementById('overlay').classList.add('hidden'); }, 400);
+            setTimeout(() => { document.getElementById('overlay').classList.add('hidden'); }, 700);
             document.body.style.overflow = 'auto';
         }
-
-        function filtrarDesdeMenu() {
-            cerrarPanel();
-            document.getElementById('inicio').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        window.onload = renderProducts;
     </script>
 </body>
 </html>

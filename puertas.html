@@ -2,100 +2,204 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#78350f">
-    <title>ARGON | Puertas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#050505">
+    <meta name="description" content="Colección exclusiva de puertas ARGON 2026">
+    <title>ARGON | Puertas de Autor</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;600;900&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
-        body { font-family: 'Outfit', sans-serif; scroll-behavior: smooth; }
-        .btn-press:active { transform: scale(0.96); filter: brightness(0.9); }
-        .card-touch { transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); }
-        .overlay-sofia { background: linear-gradient(to top, rgba(24, 24, 27, 0.8) 0%, rgba(24, 24, 27, 0) 60%); }
-        @media (min-width: 1024px) { .card-touch:hover { transform: translateY(-8px); } }
+        :root { --cobre: #b45309; --fondo: #050505; }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: var(--fondo); 
+            color: white; 
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Nav Minimalista (The Monolith Style) */
+        .nav-minimal {
+            mix-blend-mode: difference;
+            padding: 1.5rem 2rem;
+            z-index: 100;
+        }
+
+        /* Spotlight de seguimiento */
+        .spotlight {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(180, 83, 9, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        /* Grid Asimétrico */
+        .grid-custom {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 4rem 2rem;
+        }
+
+        /* Variaciones de Monolitos para Puertas (Formato más vertical) */
+        .item-tall { grid-column: span 6; height: 90vh; }
+        .item-wide { grid-column: span 6; height: 75vh; margin-top: 15vh; }
+        .item-single { grid-column: span 12; height: 80vh; margin: 5vh 15%; }
+
+        @media (max-width: 1024px) {
+            .item-tall, .item-wide, .item-single { 
+                grid-column: span 12; 
+                height: 75vh; 
+                margin: 0;
+            }
+            .grid-custom { gap: 2rem; }
+        }
+
+        /* Efectos de Monolito */
+        .monolith-item {
+            position: relative;
+            filter: grayscale(100%);
+            opacity: 0.5;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+
+        .monolith-item:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.01);
+        }
+
+        .text-reveal {
+            clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+            transition: clip-path 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .monolith-item:hover .text-reveal {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .img-parallax {
+            width: 100%;
+            height: 130%;
+            object-fit: cover;
+            position: absolute;
+            top: -15%;
+            will-change: transform;
+        }
     </style>
 </head>
-<body class="bg-zinc-50 text-zinc-900">
+<body class="antialiased">
 
-    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-lg border-b border-zinc-100">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-2 group">
-                <div class="h-10 w-10 rounded-lg overflow-hidden border border-amber-100">
-                    <img src="logo.jpeg" alt="Logo" class="h-full w-full object-cover">
-                </div>
-                <span class="text-2xl font-black tracking-tighter text-amber-900 group-hover:text-amber-700 transition-colors uppercase">ARGON</span>
-            </a>
-            <a href="index.html" class="btn-press bg-zinc-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all shadow-md flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                Inicio
-            </a>
+    <div class="spotlight" id="spotlight"></div>
+
+    <nav class="fixed top-0 w-full nav-minimal flex justify-between items-center">
+        <a href="index.html" class="group flex items-center gap-4">
+            <div class="h-10 w-10 rounded-full border border-white/20 flex items-center justify-center overflow-hidden">
+                <img src="logo.jpeg" alt="ARGON" class="h-full w-full object-cover">
+            </div>
+            <span class="text-[10px] tracking-[0.5em] font-black uppercase">ARGON / Studio</span>
+        </a>
+        <div class="text-right">
+            <h2 class="text-xl font-black italic tracking-tighter leading-none">PORTALI</h2>
+            <p class="text-[8px] tracking-[0.4em] text-stone-500 uppercase mt-1">Colección 2026</p>
         </div>
     </nav>
 
-    <header class="pt-28 pb-12 md:pt-40 md:pb-24 bg-zinc-100 text-center relative overflow-hidden">
-        <div class="max-w-4xl mx-auto px-6 relative z-10">
-            <span class="text-amber-700 font-bold uppercase tracking-[0.3em] text-[10px] block mb-2" data-aos="fade-up">Artesanía en madera</span>
-            <h1 data-aos="fade-up" data-aos-delay="100" class="text-4xl md:text-7xl font-bold text-zinc-900 italic uppercase leading-none">Puertas</h1>
-            <div data-aos="zoom-in" data-aos-delay="300" class="h-1 w-16 bg-amber-600 mx-auto my-6 rounded-full"></div>
-            <p data-aos="fade-up" data-aos-delay="400" class="text-zinc-500 max-w-xl mx-auto text-sm md:text-lg font-medium leading-relaxed">
-                Seguridad y elegancia tallada en maderas preciosas. Diseños exclusivos de la colección 2026.
-            </p>
+    <header class="h-[80vh] flex flex-col justify-center items-center px-6 text-center relative overflow-hidden">
+        <h1 class="text-[18vw] font-black leading-[0.8] tracking-tighter uppercase italic opacity-[0.03] select-none absolute pointer-events-none">
+            Puertas
+        </h1>
+        <div class="z-10" data-aos="fade-up">
+            <p class="text-orange-600 font-bold tracking-[1em] text-[10px] uppercase mb-6">Maderas Preciosas</p>
+            <h2 class="text-6xl md:text-9xl font-light tracking-tight leading-none">Umbrales de <br><span class="font-black italic">Distinción.</span></h2>
         </div>
     </header>
 
-    <section class="py-12 md:py-20 max-w-7xl mx-auto px-4 md:px-6">
-        <div id="puertas-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+    <main class="max-w-[1500px] mx-auto px-6 pb-60">
+        <div id="puertas-grid" class="grid-custom">
             </div>
-    </section>
+    </main>
 
-    <footer class="bg-zinc-900 text-white py-12 text-center border-t border-zinc-800">
-        <p class="text-zinc-500 text-[10px] uppercase tracking-widest font-bold">&copy; 2026 ARGON Carpintería - La Habana, Cuba</p>
+    <footer class="py-32 border-t border-white/5 text-center bg-[#030303]">
+        <span class="text-4xl font-black italic tracking-tighter opacity-10">ARGON</span>
+        <p class="text-stone-700 text-[9px] tracking-[0.8em] uppercase mt-8">Artesanía Cubana de Exportación</p>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
     <script>
-        AOS.init({ duration: 800, once: true });
+        AOS.init({ duration: 1200, once: true });
 
-        // Configuración de las 10 puertas con formato .jpg
-        const puertas = Array.from({ length: 10 }, (_, i) => ({
-            nombre: `Puerta ${i + 1}`,
-            img: `puerta-${i + 1}.jpg`
-        }));
+        // Spotlight
+        const spot = document.getElementById('spotlight');
+        document.addEventListener('mousemove', e => {
+            spot.style.left = e.clientX + 'px';
+            spot.style.top = e.clientY + 'px';
+        });
 
-        const grid = document.getElementById('puertas-grid');
-        
-        grid.innerHTML = puertas.map((p, index) => {
-            const delay = (index % 3) * 100;
-            const nombreParam = encodeURIComponent(p.nombre);
-            const imgParam = encodeURIComponent(p.img);
+        function renderPuertas() {
+            const container = document.getElementById('puertas-grid');
+            const layoutPattern = ['item-tall', 'item-wide', 'item-tall', 'item-single', 'item-wide', 'item-tall'];
+            
+            const html = Array.from({ length: 10 }, (_, i) => {
+                const id = i + 1;
+                const layoutClass = layoutPattern[i % layoutPattern.length];
+                const nombre = `Puerta Modelo ${id}`;
+                const img = `puerta-${id}.jpg`;
+                const ref = id < 10 ? `PRT-0${id}` : `PRT-${id}`;
 
-            return `
-            <div data-aos="fade-up" data-aos-delay="${delay}" class="card-touch bg-white rounded-[2.5rem] shadow-sm overflow-hidden border border-zinc-100 group flex flex-col cursor-pointer" 
-                 onclick="location.href='detalles-muebles.html?nombre=${nombreParam}&img=${imgParam}'">
-                
-                <div class="relative overflow-hidden h-[24rem] md:h-[28rem] bg-zinc-200">
-                    <img src="${p.img}" alt="${p.nombre}" class="w-full h-full object-cover group-hover:scale-110 transition duration-[1.5s] ease-out">
-                    
-                    <div class="absolute inset-0 overlay-sofia opacity-0 group-hover:opacity-70 transition-opacity duration-500"></div>
-                    
-                    <div class="absolute inset-0 flex items-end justify-center pb-12 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                        <span class="bg-white text-zinc-900 px-8 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-2xl">
-                            Personalizar
-                        </span>
+                return `
+                <article class="${layoutClass} monolith-item group" data-aos="fade-up" 
+                         onclick="irADetalle('${nombre}', '${img}')">
+                    <div class="w-full h-full overflow-hidden relative rounded-sm bg-stone-900">
+                        <img src="${img}" class="img-parallax" 
+                             onerror="this.src='https://via.placeholder.com/800x1200/111/222?text=ARGON+DOOR'"
+                             alt="${nombre}">
+                        
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-90 transition-opacity duration-700"></div>
+                        
+                        <div class="absolute bottom-12 left-10 text-reveal pr-10">
+                            <p class="text-orange-500 font-bold text-[9px] tracking-[0.5em] uppercase mb-3">${ref} / Sólida</p>
+                            <h3 class="text-4xl md:text-6xl font-black italic uppercase leading-none mb-6">${nombre}</h3>
+                            <div class="flex items-center gap-6">
+                                <span class="text-[10px] font-bold tracking-[0.3em] uppercase opacity-60">Configurar Acceso</span>
+                                <span class="h-px w-12 bg-orange-600 transition-all group-hover:w-24"></span>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </article>
+                `;
+            }).join('');
+            
+            container.innerHTML = html;
+        }
 
-                <div class="p-6 text-center bg-white">
-                    <p class="text-[10px] text-amber-700 font-bold uppercase tracking-[0.2em] mb-1">Estructura Algarrobo</p>
-                    <h3 class="text-xl font-bold text-zinc-800 italic uppercase leading-tight group-hover:text-amber-900 transition-colors">${p.nombre}</h3>
-                </div>
-            </div>`;
-        }).join('');
+        // Parallax Engine
+        window.addEventListener('scroll', () => {
+            const items = document.querySelectorAll('.img-parallax');
+            items.forEach(img => {
+                const rect = img.parentElement.getBoundingClientRect();
+                if(rect.top < window.innerHeight && rect.bottom > 0) {
+                    img.style.transform = `translateY(${rect.top * 0.12}px) scale(1.2)`;
+                }
+            });
+        });
+
+        function irADetalle(nombre, img) {
+            if (navigator.vibrate) navigator.vibrate(20);
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                window.location.href = `detalles-muebles.html?nombre=${encodeURIComponent(nombre)}&img=${img}`;
+            }, 500);
+        }
+
+        document.addEventListener('DOMContentLoaded', renderPuertas);
     </script>
 </body>
 </html>

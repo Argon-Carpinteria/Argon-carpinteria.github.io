@@ -3,120 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#92400e">
-    <title>ARGON | Mesas</title>
+    <meta name="theme-color" content="#050505">
+    <title>ARGON | Mesas de Autor</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;600;900&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
-        body { font-family: 'Outfit', sans-serif; scroll-behavior: smooth; }
-        .tap-feedback { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .tap-feedback:active { transform: scale(0.97); }
-        
-        /* Gradiente para el efecto hover */
-        .overlay-sofia { 
-            background: linear-gradient(to top, rgba(24, 24, 27, 0.8) 0%, rgba(24, 24, 27, 0) 60%); 
+        :root { --cobre: #b45309; --fondo: #050505; }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: var(--fondo); 
+            color: white; 
+            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Nav Monolith */
+        .nav-minimal {
+            mix-blend-mode: difference;
+            padding: 1.5rem 2rem;
+            z-index: 100;
+        }
+
+        /* Spotlight */
+        .spotlight {
+            position: fixed;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(180, 83, 9, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        /* Grid Monolith Asimétrico */
+        .monolith-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 4rem 2rem;
+        }
+
+        /* Variantes de Monolitos */
+        .item-tall { grid-column: span 5; height: 85vh; }
+        .item-wide { grid-column: span 7; height: 65vh; margin-top: 5vh; }
+        .item-standard { grid-column: span 6; height: 75vh; }
+
+        @media (max-width: 1024px) {
+            .item-tall, .item-wide, .item-standard { 
+                grid-column: span 12; 
+                height: 60vh; 
+                margin-top: 0;
+            }
+        }
+
+        .monolith-card {
+            position: relative;
+            filter: grayscale(100%);
+            opacity: 0.5;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        .monolith-card:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.02);
+        }
+
+        .img-parallax {
+            width: 100%;
+            height: 140%;
+            object-fit: cover;
+            position: absolute;
+            top: -20%;
+            transition: transform 0.15s linear;
+        }
+
+        .text-reveal {
+            clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+            transition: clip-path 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .monolith-card:hover .text-reveal {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .copper-gradient {
+            background: linear-gradient(135deg, #fbbf24 0%, #92400e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
-<body class="bg-zinc-50 text-zinc-900">
+<body class="antialiased">
 
-    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-lg border-b border-zinc-100">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-2">
-                <img src="logo.jpeg" alt="ARGON" class="h-10 w-auto rounded-lg shadow-sm">
-                <span class="text-2xl font-black tracking-tighter text-amber-900 uppercase">ARGON</span>
-            </a>
-            <a href="index.html" class="bg-amber-700 text-white p-2.5 rounded-xl hover:bg-amber-800 transition-all shadow-md active:scale-90">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                </svg>
-            </a>
+    <div class="spotlight" id="spotlight"></div>
+
+    <nav class="fixed top-0 w-full nav-minimal flex justify-between items-center">
+        <button onclick="history.back()" class="group flex items-center gap-4 outline-none">
+            <span class="text-[10px] tracking-[0.5em] font-black uppercase hover:text-orange-600 transition-colors">← Volver</span>
+        </button>
+        <div class="text-right">
+            <h2 class="text-xl font-black italic tracking-tighter leading-none uppercase copper-gradient">Mesas</h2>
+            <p class="text-[8px] tracking-[0.4em] text-stone-600 uppercase mt-1">Dining & Living 2026</p>
         </div>
     </nav>
 
-    <header class="pt-32 pb-12 bg-stone-100 text-center relative overflow-hidden">
-        <div class="max-w-3xl mx-auto px-6 relative z-10">
-            <h1 data-aos="fade-down" class="text-5xl md:text-7xl font-bold text-zinc-900 italic tracking-tighter uppercase mb-4">Mesas</h1>
-            <p data-aos="fade-up" data-aos-delay="200" class="text-zinc-500 text-sm md:text-lg font-medium leading-relaxed italic">
-                Colección 2026: Elegancia y robustez para tu hogar.
+    <header class="h-[80vh] flex flex-col justify-center items-center px-6 text-center relative overflow-hidden">
+        <div data-aos="fade-up">
+            <p class="text-orange-600 font-bold tracking-[1em] text-[10px] uppercase mb-6">Puntos de Encuentro</p>
+            <h1 class="text-6xl md:text-9xl font-light tracking-tight leading-none mb-4">Solidez <br><span class="font-black italic">Atemporal.</span></h1>
+            <p class="mt-8 text-stone-500 font-light max-w-lg mx-auto text-sm tracking-wide italic leading-relaxed">
+                Superficies que narran historias a través de la veta. Ingeniería en madera para el centro de tu hogar.
             </p>
-            <div data-aos="zoom-in" data-aos-delay="400" class="h-1 w-20 bg-amber-600 mx-auto mt-6 rounded-full"></div>
         </div>
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 w-px h-20 bg-gradient-to-b from-orange-600/50 to-transparent"></div>
     </header>
 
-    <section class="py-12 md:py-20 max-w-7xl mx-auto px-4">
-        <div id="mesas-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+    <main class="max-w-[1600px] mx-auto px-6 pb-60">
+        <div id="mesas-grid" class="monolith-grid">
             </div>
-    </section>
+    </main>
 
-    <footer class="bg-zinc-900 text-zinc-500 py-10 text-center text-[10px] font-bold uppercase tracking-[0.2em]">
-        &copy; 2026 ARGON Carpintería - Estilo que perdura
+    <footer class="py-24 border-t border-white/5 text-center bg-[#030303]">
+        <p class="text-stone-700 text-[9px] tracking-[0.8em] uppercase font-black">
+            ARGON &copy; 2026 &bull; Master Craftsmanship &bull; La Habana
+        </p>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 800, once: true });
+        AOS.init({ duration: 1200, once: true });
+
+        // Seguimiento Spotlight
+        const spot = document.getElementById('spotlight');
+        document.addEventListener('mousemove', e => {
+            spot.style.left = e.clientX + 'px';
+            spot.style.top = e.clientY + 'px';
+        });
 
         function renderMesas() {
             const container = document.getElementById('mesas-grid');
-            if (!container) return;
-
+            const totalMesas = 17;
+            const layouts = ['item-tall', 'item-wide', 'item-standard', 'item-standard'];
+            
             let html = "";
-
-            for (let i = 1; i <= 17; i++) {
-                const nombreArticulo = `Mesa ${i}`;
+            for (let i = 1; i <= totalMesas; i++) {
+                const layoutClass = layouts[(i - 1) % 4];
+                const nombre = `Mesa Platinum ${i}`;
+                
+                // Respetamos tu lógica de extensiones original
                 let extension = ".png";
-
                 if ((i >= 1 && i <= 6) || i === 16 || i === 17) {
                     extension = ".jpg";
                 }
-
-                const imgUrl = `mesa-${i}${extension}`;
-                const delay = ((i - 1) % 3) * 100;
+                const img = `mesa-${i}${extension}`;
 
                 html += `
-                <div data-aos="fade-up" data-aos-delay="${delay}" class="group">
-                    <div class="tap-feedback bg-white rounded-[2.5rem] shadow-sm hover:shadow-2xl border border-zinc-100 overflow-hidden transition-all duration-500 cursor-pointer relative" 
-                         onclick="if(navigator.vibrate) navigator.vibrate(15); location.href='detalles-muebles.html?nombre=${encodeURIComponent(nombreArticulo)}&img=${imgUrl}'">
-                        
-                        <div class="relative h-72 overflow-hidden bg-zinc-100">
-                            <img src="${imgUrl}" 
-                                 alt="${nombreArticulo}" 
-                                 class="w-full h-full object-cover group-hover:scale-110 transition duration-700"
-                                 onerror="this.onerror=null; this.src='https://via.placeholder.com/800x600?text=Error:+${imgUrl}';">
-                            
-                            <div class="absolute inset-0 overlay-sofia opacity-0 group-hover:opacity-70 transition-opacity duration-300"></div>
-                            
-                            <div class="absolute inset-0 flex items-end justify-center pb-8 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                                <span class="bg-white text-zinc-900 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-xl">Personalizar</span>
-                            </div>
+                <article class="${layoutClass} monolith-card group" data-aos="fade-up" 
+                         onclick="irADetalle('${nombre}', '${img}')">
+                    
+                    <img src="${img}" class="img-parallax" 
+                         onerror="this.src='https://via.placeholder.com/1000x1200/111/333?text=ARGON+DESIGN'"
+                         alt="${nombre}">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-0 group-hover:opacity-90 transition-opacity duration-700"></div>
+                    
+                    <div class="absolute bottom-10 left-10 text-reveal pr-10">
+                        <div class="flex items-center gap-4 mb-3">
+                            <p class="text-orange-500 font-bold text-[9px] tracking-[0.5em] uppercase italic">Comedor 2026</p>
+                            <span class="h-px w-8 bg-orange-600/30"></span>
                         </div>
-
-                        <div class="p-6 text-center">
-                            <span class="text-[9px] font-black uppercase tracking-[0.3em] text-amber-700 block mb-1">Comedor 2026</span>
-                            <h3 class="text-xl font-bold text-zinc-800 italic uppercase leading-tight group-hover:text-amber-900 transition-colors">
-                                ${nombreArticulo}
-                            </h3>
+                        <h3 class="text-4xl md:text-5xl font-black italic uppercase tracking-tighter leading-none mb-6">${nombre}</h3>
+                        <div class="flex items-center gap-4">
+                            <span class="text-[9px] font-black tracking-[0.3em] uppercase opacity-60">Configurar Medidas</span>
+                            <span class="h-px w-10 bg-orange-600 transition-all group-hover:w-20"></span>
                         </div>
                     </div>
-                </div>`;
+                </article>
+                `;
             }
-
             container.innerHTML = html;
-            setTimeout(() => { AOS.refresh(); }, 100);
         }
 
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', renderMesas);
-        } else {
-            renderMesas();
+        // Parallax scroll suave
+        window.addEventListener('scroll', () => {
+            const images = document.querySelectorAll('.img-parallax');
+            images.forEach(img => {
+                const rect = img.parentElement.getBoundingClientRect();
+                if(rect.top < window.innerHeight && rect.bottom > 0) {
+                    const shift = rect.top * 0.1;
+                    img.style.transform = `translateY(${shift}px) scale(1.1)`;
+                }
+            });
+        });
+
+        function irADetalle(nombre, imagen) {
+            if (navigator.vibrate) navigator.vibrate(20);
+            
+            // Guardamos en localStorage para que detalles-muebles.html lo reciba
+            localStorage.setItem('argon_temp_product', JSON.stringify({
+                nombre: nombre,
+                precio: 450, // Precio base de ejemplo para mesas
+                imagen: imagen
+            }));
+            
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.4s ease';
+            setTimeout(() => {
+                window.location.href = 'detalles-muebles.html';
+            }, 400);
         }
-        window.addEventListener('pageshow', renderMesas);
+
+        document.addEventListener('DOMContentLoaded', renderMesas);
     </script>
 </body>
 </html>

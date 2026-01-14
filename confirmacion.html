@@ -2,131 +2,197 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#92400e">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#050505">
     <title>ARGON | Confirmar Orden</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;600;900&display=swap" rel="stylesheet">
+    
     <style>
+        :root { --cobre: #b45309; --fondo: #050505; }
         body { 
             font-family: 'Outfit', sans-serif; 
-            font-size: 0.95rem;
+            background-color: var(--fondo); 
+            color: white;
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden; /* Estética de app pura */
         }
         
-        /* Animación de éxito para el feedback visual */
-        .btn-success {
-            background-color: #059669 !important; /* Verde esmeralda */
-            transform: scale(0.96);
+        /* El Monolito de Confirmación */
+        .monolith-confirm {
+            background: #0a0a0a;
+            border: 1px solid rgba(255,255,255,0.05);
+            animation: cubic-bezier(0.16, 1, 0.3, 1) 0.8s both slideReveal;
         }
 
-        .card-enter {
-            animation: slideUp 0.4s ease-out;
+        @keyframes slideReveal {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .copper-text {
+            background: linear-gradient(135deg, #fbbf24 0%, #92400e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Skeleton Monolith */
+        .skeleton {
+            background: linear-gradient(90deg, #0a0a0a 25%, #151515 50%, #0a0a0a 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .btn-argon {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-argon::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-argon:hover::after { left: 100%; }
+
+        .detail-line {
+            border-left: 1px solid rgba(180, 83, 9, 0.3);
+            padding-left: 1rem;
         }
     </style>
 </head>
-<body class="bg-zinc-100 min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-4">
 
-    <div class="max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl overflow-hidden card-enter">
-        <div class="bg-zinc-900 text-white p-6 text-center">
-            <h1 class="text-xl font-bold italic tracking-tighter uppercase">Revisar Pedido</h1>
-        </div>
+    <div class="fixed inset-0 pointer-events-none" 
+         style="background: radial-gradient(circle at center, rgba(180, 83, 9, 0.05) 0%, transparent 70%);"></div>
 
-        <div class="p-6 space-y-5">
-            <img id="c-img" class="w-full h-44 object-cover rounded-3xl shadow-md bg-zinc-200" alt="Vista previa mueble">
+    <main class="max-w-md w-full monolith-confirm rounded-sm shadow-2xl relative z-10 overflow-hidden">
+        
+        <header class="p-8 border-b border-white/5 flex justify-between items-center">
+            <div>
+                <p class="text-[8px] font-black uppercase tracking-[0.5em] text-stone-600 mb-1">Status</p>
+                <h1 class="text-[10px] font-bold tracking-[0.2em] uppercase text-stone-300">Revisión de Pieza</h1>
+            </div>
+            <div class="w-8 h-[1px] bg-orange-800"></div>
+        </header>
+
+        <div class="p-8 space-y-10">
+            <div class="relative aspect-video overflow-hidden bg-stone-900 border border-white/5">
+                <img id="c-img" 
+                     class="w-full h-full object-cover opacity-0 transition-opacity duration-1000 scale-110" 
+                     alt="Mueble Argon"
+                     onload="this.style.opacity='1'; this.style.transform='scale(1)'; this.nextElementSibling.remove()">
+                <div class="absolute inset-0 skeleton"></div>
+            </div>
             
-            <div class="text-center">
-                <h2 id="c-nombre" class="text-xl font-bold text-zinc-800 italic uppercase leading-tight"></h2>
-                <div class="inline-block bg-amber-50 px-4 py-1 rounded-full mt-2">
-                    <p class="text-3xl font-black text-amber-900">
-                        <span id="c-total"></span> <span class="text-sm font-bold">CUP</span>
-                    </p>
+            <div class="space-y-2">
+                <h2 id="c-nombre" class="text-4xl font-black italic uppercase tracking-tighter leading-none"></h2>
+                <div class="flex items-baseline gap-2">
+                    <span id="c-total" class="text-3xl font-light tracking-tighter copper-text"></span>
+                    <span class="text-[10px] font-black text-stone-500 uppercase tracking-widest">USD</span>
                 </div>
             </div>
 
-            <div class="bg-zinc-50 rounded-2xl p-5 border border-zinc-100 grid grid-cols-2 gap-y-4 gap-x-2 text-xs">
-                <div>
-                    <p class="text-zinc-400 font-bold uppercase text-[9px] mb-0.5">Dimensión</p>
-                    <p id="c-p1" class="font-semibold text-zinc-700 truncate"></p>
+            <div class="grid grid-cols-2 gap-y-8 gap-x-4">
+                <div class="detail-line">
+                    <p class="text-[8px] text-stone-500 font-black uppercase tracking-widest mb-1">Dimensión</p>
+                    <p id="c-p1" class="text-xs font-bold text-stone-300 uppercase tracking-tighter"></p>
                 </div>
-                <div>
-                    <p class="text-zinc-400 font-bold uppercase text-[9px] mb-0.5">Material</p>
-                    <p id="c-p2" class="font-semibold text-zinc-700 truncate"></p>
+                <div class="detail-line">
+                    <p class="text-[8px] text-stone-500 font-black uppercase tracking-widest mb-1">Material</p>
+                    <p id="c-p2" class="text-xs font-bold text-stone-300 uppercase tracking-tighter"></p>
                 </div>
-                <div>
-                    <p class="text-zinc-400 font-bold uppercase text-[9px] mb-0.5">Acabado</p>
-                    <p id="c-p3" class="font-semibold text-zinc-700 truncate"></p>
+                <div class="detail-line">
+                    <p class="text-[8px] text-stone-500 font-black uppercase tracking-widest mb-1">Acabado</p>
+                    <p id="c-p3" class="text-xs font-bold text-stone-300 uppercase tracking-tighter"></p>
                 </div>
-                <div>
-                    <p class="text-zinc-400 font-bold uppercase text-[9px] mb-0.5">Color/Extra</p>
-                    <p id="c-p4" class="font-semibold text-zinc-700 truncate"></p>
+                <div class="detail-line">
+                    <p class="text-[8px] text-stone-500 font-black uppercase tracking-widest mb-1">Color/Extra</p>
+                    <p id="c-p4" class="text-xs font-bold text-stone-300 uppercase tracking-tighter"></p>
                 </div>
             </div>
 
-            <div class="space-y-3 pt-2">
-                <button id="btn-add" onclick="añadirAlCarrito()" class="w-full bg-amber-700 hover:bg-amber-800 text-white py-4 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300 active:scale-95 flex items-center justify-center gap-3">
-                    <span id="btn-icon">🛒</span> <span id="btn-text">Confirmar y Añadir</span>
+            <div class="space-y-4 pt-6">
+                <button id="btn-add" 
+                        onclick="añadirAlCarrito()" 
+                        class="btn-argon w-full bg-orange-800 text-white py-6 font-black text-[10px] uppercase tracking-[0.4em] shadow-2xl active:scale-95 transition-all flex items-center justify-center gap-4">
+                    <span id="btn-icon">⚡</span> 
+                    <span id="btn-text">Confirmar Orden</span>
                 </button>
                 
-                <button onclick="window.history.back()" class="w-full text-zinc-400 text-sm font-medium py-2 hover:text-zinc-600 transition-colors">
-                    Corregir detalles
+                <button onclick="window.history.back()" 
+                        class="w-full text-stone-600 text-[9px] font-black uppercase tracking-[0.3em] py-2 hover:text-white transition-colors">
+                    ← Editar Configuración
                 </button>
             </div>
         </div>
-    </div>
+
+        <div class="absolute top-1/2 -right-4 -translate-y-1/2 rotate-90 opacity-10">
+            <p class="text-[8px] font-black tracking-[1em] uppercase">Argon Studio Systems v.2026</p>
+        </div>
+    </main>
 
     <script>
         const params = new URLSearchParams(window.location.search);
+        const getData = (key, fallback) => params.get(key) || fallback;
 
-        // Poblar datos con seguridad
-        document.getElementById('c-nombre').innerText = params.get('nombre') || 'Mueble Argon';
-        document.getElementById('c-total').innerText = params.get('total') || '0';
-        document.getElementById('c-p1').innerText = params.get('p1') || 'Estándar';
-        document.getElementById('c-p2').innerText = params.get('p2') || 'Madera Pino';
-        document.getElementById('c-p3').innerText = params.get('p3') || 'Natural';
-        document.getElementById('c-p4').innerText = params.get('p4') || 'Ninguno';
+        // Poblado de datos
+        document.getElementById('c-nombre').textContent = getData('nombre', 'Pieza Argon');
+        document.getElementById('c-p1').textContent = getData('p1', 'Estándar');
+        document.getElementById('c-p2').textContent = getData('p2', 'Algarrobo');
+        document.getElementById('c-p3').textContent = getData('p3', 'Natural');
+        document.getElementById('c-p4').textContent = getData('p4', 'Ninguno');
+
+        const totalRaw = getData('total', '0');
+        document.getElementById('c-total').textContent = Number(totalRaw).toLocaleString('en-US');
         
-        // Manejo de imagen con reemplazo de caracteres para URL limpia
         let imgPath = params.get('img');
         if (imgPath) {
-            imgPath = imgPath.replace(/\|/g, '&');
-            document.getElementById('c-img').src = imgPath;
+            document.getElementById('c-img').src = imgPath.replace(/\|/g, '&');
         }
 
         function añadirAlCarrito() {
-            // Vibración sutil (30ms)
-            if ("vibrate" in navigator) {
-                navigator.vibrate(30);
-            }
+            if ("vibrate" in navigator) navigator.vibrate(20);
 
             const btn = document.getElementById('btn-add');
             const btnText = document.getElementById('btn-text');
             const btnIcon = document.getElementById('btn-icon');
             
-            // Efecto visual de éxito
-            btn.classList.add('btn-success');
-            btnText.innerText = "¡Listo!";
-            btnIcon.innerText = "✅";
+            btn.style.pointerEvents = 'none';
+            btn.classList.replace('bg-orange-800', 'bg-emerald-900');
+            btnText.textContent = "Añadido a la Colección";
+            btnIcon.textContent = "✓";
 
             const item = {
-                nombre: document.getElementById('c-nombre').innerText,
-                detalles: `${document.getElementById('c-p1').innerText} | ${document.getElementById('c-p2').innerText} | ${document.getElementById('c-p3').innerText}`,
-                precio: document.getElementById('c-total').innerText.replace(/\./g, ''), // Guardar número puro
+                nombre: document.getElementById('c-nombre').textContent,
+                detalles: `${document.getElementById('c-p1').textContent} | ${document.getElementById('c-p2').textContent}`,
+                precio: totalRaw,
                 img: document.getElementById('c-img').src,
-                categoria: "Personalizado"
+                timestamp: new Date().getTime()
             };
 
-            let carrito = JSON.parse(localStorage.getItem('carritoArgon')) || [];
-            carrito.push(item);
-            localStorage.setItem('carritoArgon', JSON.stringify(carrito));
+            try {
+                const carrito = JSON.parse(localStorage.getItem('carritoArgon')) || [];
+                carrito.push(item);
+                localStorage.setItem('carritoArgon', JSON.stringify(carrito));
+            } catch (e) {
+                console.error("Error storage", e);
+            }
 
             setTimeout(() => {
                 window.location.href = 'carrito.html';
-            }, 600);
+            }, 1000);
         }
     </script>
 </body>

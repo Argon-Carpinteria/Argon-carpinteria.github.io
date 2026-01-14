@@ -2,124 +2,215 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARGON | Configurar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#050505">
+    <title>ARGON | Studio Configurator</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;600;900&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
-        .option-card { transition: all 0.2s ease; border: 2px solid #f4f4f5; cursor: pointer; }
-        .selected { border-color: #92400e !important; background-color: #fffbeb !important; transform: scale(1.02); }
-        .color-dot { width: 35px; height: 35px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 0 1px rgba(0,0,0,0.1); margin: 0 auto; }
-        .color-selected { outline: 2px solid #92400e; outline-offset: 3px; }
-        select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; }
+        :root { --cobre: #b45309; --fondo: #050505; }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: var(--fondo); 
+            color: white; 
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Efecto Monolith para el selector */
+        .config-card {
+            background: #0a0a0a;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .selected-monolith {
+            border-color: var(--cobre) !important;
+            background: rgba(180, 83, 9, 0.05);
+            box-shadow: 0 0 30px rgba(180, 83, 9, 0.1);
+        }
+
+        /* Color Dots Premium */
+        .color-dot { 
+            width: 48px; height: 48px; 
+            border-radius: 2px; 
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .color-selected { 
+            transform: scale(1.2);
+            outline: 1px solid var(--cobre);
+            outline-offset: 4px;
+        }
+
+        /* Custom Dropdown */
+        select { 
+            appearance: none; 
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b45309' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); 
+            background-repeat: no-repeat; 
+            background-position: right 1.5rem center; 
+            background-size: 1rem; 
+        }
+
+        .copper-gradient {
+            background: linear-gradient(135deg, #fbbf24 0%, #92400e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Spotlight Animado */
+        .spotlight {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(180, 83, 9, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+        }
     </style>
 </head>
-<body class="bg-zinc-50 pb-32">
+<body class="antialiased pb-40">
 
-    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-zinc-100 p-4">
-        <div class="max-w-2xl mx-auto flex items-center justify-between">
-            <button onclick="history.back()" class="p-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
-            <div class="text-center">
-                <span class="text-xs uppercase tracking-[0.2em] text-zinc-400 font-black">Configuración</span>
+    <div class="spotlight" id="spotlight"></div>
+
+    <nav class="sticky top-0 z-50 bg-black/60 backdrop-blur-xl border-b border-white/5 p-6">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <button onclick="history.back()" class="group flex items-center gap-3 outline-none">
+                <span class="text-[10px] tracking-[0.4em] font-black uppercase text-stone-500 group-hover:text-orange-500 transition-colors">← Volver</span>
+            </button>
+            <div class="text-right">
+                <span class="text-[8px] uppercase tracking-[0.5em] text-stone-600 font-black block mb-1">Configuración de Autor</span>
+                <span id="nav-item-name" class="text-xs font-bold copper-gradient uppercase tracking-widest">Cargando...</span>
             </div>
-            <div class="w-10"></div>
         </div>
     </nav>
 
-    <main class="max-w-2xl mx-auto p-4">
-        <div class="bg-white rounded-[2.5rem] p-2 shadow-xl border border-zinc-100 mb-4">
-            <div class="rounded-[2.2rem] overflow-hidden aspect-square bg-zinc-100">
-                <img id="m-img" src="" class="w-full h-full object-cover">
+    <main class="max-w-4xl mx-auto p-6 relative z-10">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+            <div class="relative group">
+                <div class="absolute -inset-4 bg-orange-600/10 blur-3xl opacity-0 group-hover:opacity-100 transition duration-1000"></div>
+                <div class="relative bg-stone-900 aspect-square rounded-sm overflow-hidden border border-white/5">
+                    <img id="m-img" src="" alt="Preview" class="w-full h-full object-cover opacity-0 transition-opacity duration-1000">
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <h1 id="m-nombre" class="text-5xl font-light tracking-tighter leading-none italic">
+                    <span class="font-black block uppercase not-italic">Personalizar</span>
+                    Cargando...
+                </h1>
+                
+                <div class="flex items-baseline gap-4">
+                    <div id="m-precio-grande" class="text-6xl font-black tracking-tighter">0 USD</div>
+                </div>
+
+                <div class="flex items-center gap-4 py-4 border-y border-white/5">
+                    <span class="w-2 h-2 rounded-full bg-orange-600 animate-pulse"></span>
+                    <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-stone-400">Entrega Estimada: 20 Días</p>
+                </div>
             </div>
         </div>
 
-        <div class="text-center mb-8 px-4">
-            <div id="m-precio-grande" class="text-4xl font-black text-zinc-900 mb-2">0 USD</div>
-            <p class="text-amber-800 text-[11px] font-bold uppercase tracking-wider leading-tight">
-                "Los muebles son por encargos en un plazo de 20 días hechos desde cero"
-            </p>
-        </div>
-
-        <h1 id="m-nombre" class="text-3xl font-black text-zinc-900 italic uppercase text-center mb-8">Cargando...</h1>
-
-        <section class="mb-8">
-            <h3 class="text-xs font-black uppercase tracking-widest text-zinc-400 mb-4 ml-2">Selecciona tu Provincia</h3>
-            <div class="relative">
-                <select id="provincia-select" onchange="cambioProvincia(this.value)" class="w-full bg-white border-2 border-zinc-100 p-4 rounded-2xl font-bold text-zinc-700 outline-none focus:border-amber-700 transition-all">
-                    <option value="" disabled selected>Elegir provincia...</option>
-                    <option value="Pinar del Río">Pinar del Río</option>
-                    <option value="Artemisa">Artemisa</option>
-                    <option value="La Habana">La Habana (Transporte Incluido)</option>
-                    <option value="Mayabeque">Mayabeque</option>
-                    <option value="Matanzas">Matanzas</option>
-                    <option value="Cienfuegos">Cienfuegos</option>
-                    <option value="Villa Clara">Villa Clara</option>
-                    <option value="Sancti Spíritus">Sancti Spíritus</option>
-                    <option value="Ciego de Ávila">Ciego de Ávila</option>
-                    <option value="Camagüey">Camagüey</option>
-                    <option value="Las Tunas">Las Tunas</option>
-                    <option value="Holguín">Holguín</option>
-                    <option value="Granma">Granma</option>
-                    <option value="Santiago de Cuba">Santiago de Cuba</option>
-                    <option value="Guantánamo">Guantánamo</option>
-                    <option value="Isla de la Juventud">Isla de la Juventud</option>
-                </select>
-            </div>
-            <div id="mensaje-habana" class="hidden mt-2 ml-2 text-[10px] font-bold text-emerald-600 uppercase tracking-widest">
-                ¡Felicidades! Tienes transporte gratis a domicilio.
-            </div>
-        </section>
-
-        <section class="mb-8">
-            <h3 class="text-xs font-black uppercase tracking-widest text-zinc-400 mb-4 ml-2">1. Tipo de Madera</h3>
-            <div class="grid grid-cols-1 gap-2">
-                <div class="option-card bg-white p-4 rounded-2xl selected">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <span class="block font-bold text-sm">Algarrobo</span>
-                            <span class="text-[9px] text-zinc-400 italic">Madera preciosa de alta durabilidad</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-amber-700 uppercase">Seleccionado</span>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+            
+            <div class="space-y-12">
+                <section>
+                    <div class="flex items-center gap-4 mb-6">
+                        <span class="text-orange-600 font-black text-xs italic">01.</span>
+                        <h3 class="text-[10px] font-black uppercase tracking-[0.5em] text-stone-500">Destino de Entrega</h3>
                     </div>
-                </div>
-            </div>
-        </section>
+                    <select id="provincia-select" onchange="cambioProvincia(this.value)" 
+                            class="w-full bg-[#0a0a0a] border border-white/10 p-6 text-white font-bold tracking-widest outline-none focus:border-orange-600 transition-all text-xs uppercase">
+                        <option value="" disabled selected>Seleccione Provincia</option>
+                        <option value="Pinar del Río">Pinar del Río</option>
+                        <option value="Artemisa">Artemisa</option>
+                        <option value="La Habana">La Habana (ENVÍO GRATIS)</option>
+                        <option value="Mayabeque">Mayabeque</option>
+                        <option value="Matanzas">Matanzas</option>
+                        <option value="Cienfuegos">Cienfuegos</option>
+                        <option value="Villa Clara">Villa Clara</option>
+                        <option value="Sancti Spíritus">Sancti Spíritus</option>
+                        <option value="Ciego de Ávila">Ciego de Ávila</option>
+                        <option value="Camagüey">Camagüey</option>
+                        <option value="Las Tunas">Las Tunas</option>
+                        <option value="Holguín">Holguín</option>
+                        <option value="Granma">Granma</option>
+                        <option value="Santiago de Cuba">Santiago de Cuba</option>
+                        <option value="Guantánamo">Guantánamo</option>
+                    </select>
+                    <div id="mensaje-habana" class="hidden mt-4 p-4 border border-emerald-900/30 bg-emerald-950/20 rounded-sm">
+                        <p class="text-emerald-500 text-[9px] font-bold uppercase tracking-widest flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Cortesía Argon: Transporte incluido
+                        </p>
+                    </div>
+                </section>
 
-        <section id="seccion-tipo-tela" class="mb-8">
-            <h3 class="text-xs font-black uppercase tracking-widest text-zinc-400 mb-4 ml-2">2. Tipo de Tela</h3>
-            <div class="grid grid-cols-2 gap-3">
-                <div onclick="selectOption(this, 'tela', 'Microfibra')" class="option-card bg-white p-4 rounded-2xl selected">
-                    <span class="block font-bold">Microfibra</span>
-                </div>
-                <div onclick="selectOption(this, 'tela', 'Chenille')" class="option-card bg-white p-4 rounded-2xl">
-                    <span class="block font-bold">Chenille</span>
-                </div>
-                <div onclick="selectOption(this, 'tela', 'Polipiel')" class="option-card bg-white p-4 rounded-2xl">
-                    <span class="block font-bold">Polipiel</span>
-                </div>
-                <div onclick="selectOption(this, 'tela', 'Flexivinil')" class="option-card bg-white p-4 rounded-2xl">
-                    <span class="block font-bold">Flexivinil</span>
-                </div>
-                <div onclick="selectOption(this, 'tela', 'Tejido Saco')" class="option-card bg-white p-4 rounded-2xl col-span-2 text-center">
-                    <span class="block font-bold">Tejido Saco</span>
-                </div>
+                <section>
+                    <div class="flex items-center gap-4 mb-6">
+                        <span class="text-orange-600 font-black text-xs italic">02.</span>
+                        <h3 class="text-[10px] font-black uppercase tracking-[0.5em] text-stone-500">Material Base</h3>
+                    </div>
+                    <div class="config-card p-6 border-l-4 border-l-orange-600">
+                        <span class="block font-black uppercase tracking-tighter text-xl">Algarrobo</span>
+                        <span class="text-[9px] text-stone-500 uppercase tracking-widest font-bold">Madera Preciosa Seleccionada</span>
+                    </div>
+                </section>
             </div>
-        </section>
 
-        <section id="seccion-color" class="mb-8">
-            <h3 class="text-xs font-black uppercase tracking-widest text-zinc-400 mb-4 ml-2">3. Color de Tela</h3>
-            <div id="contenedor-colores" class="bg-white p-6 rounded-[2rem] border border-zinc-100 flex flex-wrap justify-center gap-6">
+            <div id="configurador-textil" class="space-y-12">
+                <section>
+                    <div class="flex items-center gap-4 mb-6">
+                        <span class="text-orange-600 font-black text-xs italic">03.</span>
+                        <h3 class="text-[10px] font-black uppercase tracking-[0.5em] text-stone-500">Textura / Tapicería</h3>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="selectOption(this, 'tela', 'Microfibra')" class="config-card p-4 text-left selected-monolith">
+                            <span class="block text-[10px] font-black uppercase tracking-widest">Microfibra</span>
+                        </button>
+                        <button onclick="selectOption(this, 'tela', 'Chenille')" class="config-card p-4 text-left">
+                            <span class="block text-[10px] font-black uppercase tracking-widest">Chenille</span>
+                        </button>
+                        <button onclick="selectOption(this, 'tela', 'Polipiel')" class="config-card p-4 text-left">
+                            <span class="block text-[10px] font-black uppercase tracking-widest">Polipiel</span>
+                        </button>
+                        <button onclick="selectOption(this, 'tela', 'Flexivinil')" class="config-card p-4 text-left">
+                            <span class="block text-[10px] font-black uppercase tracking-widest">Flexivinil</span>
+                        </button>
+                    </div>
+                </section>
+
+                <section id="seccion-color">
+                    <div class="flex items-center gap-4 mb-6">
+                        <span class="text-orange-600 font-black text-xs italic">04.</span>
+                        <h3 class="text-[10px] font-black uppercase tracking-[0.5em] text-stone-500">Acabado Cromático</h3>
+                    </div>
+                    <div id="contenedor-colores" class="grid grid-cols-4 gap-6">
+                        </div>
+                </section>
             </div>
-        </section>
+        </div>
     </main>
 
-    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-zinc-100">
-        <button onclick="agregarAlCarrito()" class="w-full bg-zinc-900 text-white py-4 rounded-2xl font-bold shadow-xl">Añadir al Carrito</button>
+    <div class="fixed bottom-0 left-0 right-0 p-8 bg-black/80 backdrop-blur-2xl border-t border-white/5 z-50">
+        <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="hidden md:block">
+                <p class="text-[8px] font-black uppercase tracking-[0.4em] text-stone-600">Total Configurado</p>
+                <p id="footer-precio" class="text-2xl font-black tracking-tighter">0 USD</p>
+            </div>
+            <button onclick="agregarAlCarrito()" class="w-full md:w-auto bg-orange-700 hover:bg-orange-600 text-white px-12 py-5 font-black uppercase tracking-[0.3em] text-[10px] transition-all active:scale-95 shadow-2xl shadow-orange-900/20">
+                Añadir a la Colección
+            </button>
+        </div>
     </div>
 
     <script>
-        let PRECIO_BASE = 850; 
+        let PRECIO_BASE = 0; 
         let seleccion = { nombre: "", img: "", madera: "Algarrobo", tela: "Microfibra", color: "", provincia: "", precio: 0, transporte: "No incluido" };
 
         const paletas = {
@@ -127,83 +218,54 @@
                 { nombre: "Gris", clase: "bg-zinc-500" },
                 { nombre: "Crema", clase: "bg-[#F5F5DC]" },
                 { nombre: "Chocolate", clase: "bg-[#3d1c02]" },
-                { nombre: "Arena", clase: "bg-[#C2B280]" }
+                { nombre: "Arena", clase: "bg-[#C2B280]" },
+                { nombre: "Negro", clase: "bg-zinc-900" },
+                { nombre: "Azul Marino", clase: "bg-blue-900" }
             ]
         };
+
+        const spot = document.getElementById('spotlight');
+        document.addEventListener('mousemove', e => {
+            spot.style.left = e.clientX + 'px';
+            spot.style.top = e.clientY + 'px';
+        });
 
         function cargar() {
             const p = new URLSearchParams(window.location.search);
             const productoGuardado = localStorage.getItem('argon_temp_product');
 
             if (p.has('nombre')) {
-                let nombreRaw = p.get('nombre') || 'Mueble';
-                seleccion.nombre = nombreRaw.replace(/-/g, ' ');
+                seleccion.nombre = (p.get('nombre') || 'Mueble').replace(/-/g, ' ');
                 seleccion.img = (p.get('img') || '').replace(/\|/g, '&');
+                if(p.has('precio')) PRECIO_BASE = parseInt(p.get('precio'));
             } else if (productoGuardado) {
                 const producto = JSON.parse(productoGuardado);
                 seleccion.nombre = producto.nombre;
                 seleccion.img = producto.imagen;
-                PRECIO_BASE = producto.precio;
+                PRECIO_BASE = parseInt(producto.precio);
             }
 
-            gestionarOpcionesProducto(seleccion.nombre);
-
-            document.getElementById('m-nombre').innerText = seleccion.nombre;
             document.getElementById('m-img').src = seleccion.img;
+            document.getElementById('m-img').onload = function() { this.style.opacity = "1"; };
+            document.getElementById('m-nombre').innerHTML = `<span class="font-black block uppercase not-italic">Personalizar</span> ${seleccion.nombre}`;
+            document.getElementById('nav-item-name').innerText = seleccion.nombre;
+
+            gestionarOpcionesProducto(seleccion.nombre);
+            actualizarPrecio();
             
             const claveFinal = seleccion.nombre.toLowerCase().trim().replace(/\s+/g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             configurarColores(claveFinal);
-            actualizarPrecio();
         }
 
         function gestionarOpcionesProducto(nombre) {
-            const nombreNormalizado = nombre.toLowerCase();
-            const seccionTela = document.getElementById('seccion-tipo-tela');
-            const seccionColor = document.getElementById('seccion-color');
+            const normalized = nombre.toLowerCase();
+            const configTextil = document.getElementById('configurador-textil');
+            const sinTela = ["aparador", "estante", "puerta", "multimueble", "repisa", "vitrina", "comoda", "mesa"];
             
-            // FILTRO PARA PRODUCTOS SIN TELA: Aparadores, Estantes, Puertas y MULTIMUEBLES
-            if (nombreNormalizado.includes("aparador") || 
-                nombreNormalizado.includes("estante") || 
-                nombreNormalizado.includes("puerta") || 
-                nombreNormalizado.includes("multimueble")) {
-                
-                seccionTela.style.display = "none";
-                seccionColor.style.display = "none";
+            if (sinTela.some(keyword => normalized.includes(keyword))) {
+                configTextil.style.display = "none";
                 seleccion.tela = "N/A";
-                seleccion.color = "Acabado Madera";
-                return;
-            }
-
-            // Detección para CAMAS específicas sin tela
-            if (nombreNormalizado.includes("camas")) {
-                const camasSinTela = ["11", "21", "23"];
-                const numeroCama = nombreNormalizado.replace("camas-", "").replace("camas", "").trim();
-                if (camasSinTela.includes(numeroCama)) {
-                    seccionTela.style.display = "none";
-                    seccionColor.style.display = "none";
-                    seleccion.tela = "Madera Vista";
-                    seleccion.color = "Barniz Algarrobo";
-                    return;
-                }
-            }
-
-            // Detección para MESAS
-            if (nombreNormalizado.includes("mesa")) {
-                const numerosConTela = ["1", "2", "4", "7", "9", "13", "14", "15", "16", "17"];
-                const numeroExtraido = nombreNormalizado.replace("mesa-", "").replace("mesa", "").trim();
-                if (numerosConTela.includes(numeroExtraido)) {
-                    seccionTela.style.display = "block";
-                    seccionColor.style.display = "block";
-                } else {
-                    seccionTela.style.display = "none";
-                    seccionColor.style.display = "none";
-                    seleccion.tela = "Madera Vista";
-                    seleccion.color = "Barniz Natural";
-                }
-            } else {
-                // Sofás y otros productos que sí llevan tela
-                seccionTela.style.display = "block";
-                seccionColor.style.display = "block";
+                seleccion.color = "Natural (Barniz)";
             }
         }
 
@@ -220,8 +282,8 @@
         }
 
         function selectOption(el, tipo, valor) {
-            el.parentElement.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
+            el.parentElement.querySelectorAll('.config-card').forEach(c => c.classList.remove('selected-monolith'));
+            el.classList.add('selected-monolith');
             seleccion[tipo] = valor;
         }
 
@@ -229,11 +291,15 @@
             const contenedor = document.getElementById('contenedor-colores');
             const listaColores = paletas[clave] || paletas["Estandar"];
             contenedor.innerHTML = ""; 
+            
             listaColores.forEach(c => {
-                const div = document.createElement('div');
-                div.className = "text-center cursor-pointer";
+                const div = document.createElement('button');
+                div.className = "flex flex-col items-center gap-3 outline-none group";
                 div.onclick = function() { selectColor(this, c.nombre) };
-                div.innerHTML = `<div class="color-dot ${c.clase}"></div><span class="text-[9px] font-bold mt-2 block uppercase text-zinc-600">${c.nombre}</span>`;
+                div.innerHTML = `
+                    <div class="color-dot ${c.clase}"></div>
+                    <span class="text-[8px] font-bold uppercase text-stone-600 tracking-tighter transition-colors group-hover:text-orange-500">${c.nombre}</span>
+                `;
                 contenedor.appendChild(div);
             });
         }
@@ -245,21 +311,24 @@
         }
 
         function actualizarPrecio() {
-            seleccion.precio = PRECIO_BASE;
-            const formato = seleccion.precio.toLocaleString('en-US') + " USD";
-            document.getElementById('m-precio-grande').innerText = formato;
+            seleccion.precio = PRECIO_BASE || 0;
+            const precioStr = seleccion.precio.toLocaleString('en-US') + " USD";
+            document.getElementById('m-precio-grande').innerText = precioStr;
+            document.getElementById('footer-precio').innerText = precioStr;
         }
 
         function agregarAlCarrito() {
-            if(!seleccion.provincia) return alert("Por favor, selecciona tu provincia.");
-            
-            const seccionColor = document.getElementById('seccion-color');
-            if(seccionColor.style.display !== "none" && !seleccion.color) {
-                return alert("Por favor, elige un color de tela.");
+            if(!seleccion.provincia) {
+                alert("Indique provincia de entrega.");
+                return;
+            }
+            if(document.getElementById('configurador-textil').style.display !== "none" && !seleccion.color) {
+                alert("Seleccione un acabado cromático.");
+                return;
             }
             
             let carrito = JSON.parse(localStorage.getItem('argon_cart')) || [];
-            carrito.push(seleccion);
+            carrito.push({...seleccion, id: Date.now()});
             localStorage.setItem('argon_cart', JSON.stringify(carrito));
             window.location.href = 'carrito.html';
         }
