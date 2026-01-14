@@ -86,7 +86,7 @@
             </div>
         </section>
 
-        <section class="mb-8">
+        <section id="seccion-tipo-tela" class="mb-8">
             <h3 class="text-xs font-black uppercase tracking-widest text-zinc-400 mb-4 ml-2">2. Tipo de Tela</h3>
             <div class="grid grid-cols-2 gap-3">
                 <div onclick="selectOption(this, 'tela', 'Microfibra')" class="option-card bg-white p-4 rounded-2xl selected">
@@ -107,7 +107,7 @@
             </div>
         </section>
 
-        <section class="mb-8">
+        <section id="seccion-color" class="mb-8">
             <h3 class="text-xs font-black uppercase tracking-widest text-zinc-400 mb-4 ml-2">3. Color de Tela</h3>
             <div id="contenedor-colores" class="bg-white p-6 rounded-[2rem] border border-zinc-100 flex flex-wrap justify-center gap-6">
             </div>
@@ -123,12 +123,6 @@
         let seleccion = { nombre: "", img: "", madera: "Algarrobo", tela: "Microfibra", color: "", provincia: "", precio: 0, transporte: "No incluido" };
 
         const paletas = {
-            "juego-de-sala-armonia": [{ nombre: "Perla", clase: "bg-slate-200" }, { nombre: "Turquesa", clase: "bg-cyan-500" }],
-            "juego-de-sala-chesterfield": [
-                { nombre: "Crema", clase: "bg-[#F5F5DC]" }, { nombre: "Negro", clase: "bg-black" },
-                { nombre: "Rojo Vino", clase: "bg-red-900" }, { nombre: "Verde Jade", clase: "bg-emerald-700" },
-                { nombre: "Azul Brillante", clase: "bg-blue-600" }
-            ],
             "Estandar": [
                 { nombre: "Gris", clase: "bg-zinc-500" },
                 { nombre: "Crema", clase: "bg-[#F5F5DC]" },
@@ -141,18 +135,10 @@
             const p = new URLSearchParams(window.location.search);
             const productoGuardado = localStorage.getItem('argon_temp_product');
 
-            // LÓGICA DE DETECCIÓN:
-            // Si la URL tiene parámetros (como tus sofás), usa la URL.
-            // Si no, busca en localStorage (como tus camas).
             if (p.has('nombre')) {
                 let nombreRaw = p.get('nombre') || 'Mueble';
                 seleccion.nombre = nombreRaw.replace(/-/g, ' ');
                 seleccion.img = (p.get('img') || '').replace(/\|/g, '&');
-                
-                // Si es un sofá Victoria, ajustamos el precio base como tenías antes
-                const nombreClave = nombreRaw.toLowerCase().trim().replace(/\s+/g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                if (nombreClave.includes("victoria")) PRECIO_BASE = 500;
-                
             } else if (productoGuardado) {
                 const producto = JSON.parse(productoGuardado);
                 seleccion.nombre = producto.nombre;
@@ -160,16 +146,65 @@
                 PRECIO_BASE = producto.precio;
             }
 
-            // Aplicamos los cambios a la pantalla
+            gestionarOpcionesProducto(seleccion.nombre);
+
             document.getElementById('m-nombre').innerText = seleccion.nombre;
             document.getElementById('m-img').src = seleccion.img;
             
             const claveFinal = seleccion.nombre.toLowerCase().trim().replace(/\s+/g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             configurarColores(claveFinal);
             actualizarPrecio();
+        }
+
+        function gestionarOpcionesProducto(nombre) {
+            const nombreNormalizado = nombre.toLowerCase();
+            const seccionTela = document.getElementById('seccion-tipo-tela');
+            const seccionColor = document.getElementById('seccion-color');
             
-            // Limpiamos el localStorage de camas para que no interfiera en la próxima carga
-            localStorage.removeItem('argon_temp_product');
+            // FILTRO PARA PRODUCTOS SIN TELA: Aparadores, Estantes, Puertas y MULTIMUEBLES
+            if (nombreNormalizado.includes("aparador") || 
+                nombreNormalizado.includes("estante") || 
+                nombreNormalizado.includes("puerta") || 
+                nombreNormalizado.includes("multimueble")) {
+                
+                seccionTela.style.display = "none";
+                seccionColor.style.display = "none";
+                seleccion.tela = "N/A";
+                seleccion.color = "Acabado Madera";
+                return;
+            }
+
+            // Detección para CAMAS específicas sin tela
+            if (nombreNormalizado.includes("camas")) {
+                const camasSinTela = ["11", "21", "23"];
+                const numeroCama = nombreNormalizado.replace("camas-", "").replace("camas", "").trim();
+                if (camasSinTela.includes(numeroCama)) {
+                    seccionTela.style.display = "none";
+                    seccionColor.style.display = "none";
+                    seleccion.tela = "Madera Vista";
+                    seleccion.color = "Barniz Algarrobo";
+                    return;
+                }
+            }
+
+            // Detección para MESAS
+            if (nombreNormalizado.includes("mesa")) {
+                const numerosConTela = ["1", "2", "4", "7", "9", "13", "14", "15", "16", "17"];
+                const numeroExtraido = nombreNormalizado.replace("mesa-", "").replace("mesa", "").trim();
+                if (numerosConTela.includes(numeroExtraido)) {
+                    seccionTela.style.display = "block";
+                    seccionColor.style.display = "block";
+                } else {
+                    seccionTela.style.display = "none";
+                    seccionColor.style.display = "none";
+                    seleccion.tela = "Madera Vista";
+                    seleccion.color = "Barniz Natural";
+                }
+            } else {
+                // Sofás y otros productos que sí llevan tela
+                seccionTela.style.display = "block";
+                seccionColor.style.display = "block";
+            }
         }
 
         function cambioProvincia(valor) {
@@ -217,7 +252,11 @@
 
         function agregarAlCarrito() {
             if(!seleccion.provincia) return alert("Por favor, selecciona tu provincia.");
-            if(!seleccion.color) return alert("Por favor, elige un color.");
+            
+            const seccionColor = document.getElementById('seccion-color');
+            if(seccionColor.style.display !== "none" && !seleccion.color) {
+                return alert("Por favor, elige un color de tela.");
+            }
             
             let carrito = JSON.parse(localStorage.getItem('argon_cart')) || [];
             carrito.push(seleccion);

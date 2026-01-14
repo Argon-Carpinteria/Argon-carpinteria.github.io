@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#92400e">
-    <title>ARGON | Multimuebles</title>
+    <title>ARGON | Colección Aparadores</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -16,7 +16,7 @@
         .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
         .glass-header { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
 
-        /* Estilo para el botón flotante sobre la imagen */
+        /* Gradiente para asegurar legibilidad en el botón flotante */
         .overlay-sofia {
             background: linear-gradient(to top, rgba(24, 24, 27, 0.8) 0%, rgba(24, 24, 27, 0) 60%);
         }
@@ -32,19 +32,19 @@
             </button>
             <div class="text-center">
                 <span class="block text-[10px] font-bold uppercase tracking-[0.3em] text-amber-700">Colección</span>
-                <span class="text-xl font-black tracking-tighter italic">MULTIMUEBLES</span>
+                <span class="text-xl font-black tracking-tighter italic">APARADORES</span>
             </div>
             <div class="w-10"></div> 
         </div>
     </nav>
 
     <header class="pt-32 pb-12 px-6 text-center">
-        <h1 data-aos="fade-up" class="text-4xl font-bold text-zinc-800 italic mb-2">Versatilidad y Estilo</h1>
-        <p data-aos="fade-up" data-aos-delay="100" class="text-zinc-500 max-w-md mx-auto">Soluciones inteligentes de almacenamiento con el sello de calidad ARGON.</p>
+        <h1 data-aos="fade-up" class="text-4xl font-bold text-zinc-800 italic mb-2">Elegancia Funcional</h1>
+        <p data-aos="fade-up" data-aos-delay="100" class="text-zinc-500 max-w-md mx-auto">Aparadores de diseño minimalista y clásico para organizar tu hogar con distinción.</p>
     </header>
 
     <section class="max-w-7xl mx-auto px-4 pb-24">
-        <div id="multimuebles-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div id="aparadores-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         </div>
     </section>
 
@@ -56,18 +56,19 @@
     <script>
         AOS.init({ duration: 800, once: true });
 
-        function renderMultimuebles() {
-            const grid = document.getElementById('multimuebles-grid');
+        function renderAparadores() {
+            const grid = document.getElementById('aparadores-grid');
             if(!grid) return;
 
             let htmlContent = '';
+            const totalAparadores = 16;
             
-            for (let i = 1; i <= 10; i++) {
-                const nombre = `Multimueble-${i}`;
-                const precio = 850;
+            for (let i = 1; i <= totalAparadores; i++) {
+                const nombre = `Aparadores-${i}`;
+                const precio = 600; 
                 
-                let extension = [1, 2, 3, 4, 5, 6, 9].includes(i) ? 'jpg' : 'png';
-                const imagen = `multimueble-${i}.${extension}`;
+                let extension = [1, 2, 4, 5, 6, 16].includes(i) ? 'jpg' : 'png';
+                const imagen = `aparador-${i}.${extension}`;
 
                 htmlContent += `
                     <div data-aos="fade-up" class="group bg-white rounded-3xl shadow-sm overflow-hidden border border-zinc-100 cursor-pointer" 
@@ -103,7 +104,7 @@
             window.location.href = 'detalles-muebles.html';
         }
 
-        window.addEventListener('pageshow', renderMultimuebles);
+        window.addEventListener('pageshow', renderAparadores);
     </script>
 </body>
 </html>

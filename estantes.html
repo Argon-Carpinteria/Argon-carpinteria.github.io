@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ARGON | Estantes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .img-container { position: relative; padding-top: 100%; background: #ececec; border-radius: 2rem; overflow: hidden; }
+        .img-container img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Gradiente para el botón flotante */
+        .overlay-sofia {
+            background: linear-gradient(to top, rgba(24, 24, 27, 0.8) 0%, rgba(24, 24, 27, 0) 60%);
+        }
+    </style>
+</head>
+<body class="bg-zinc-50">
+
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-zinc-100 p-4">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <button onclick="location.href='index.html'" class="p-2 text-zinc-900">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </button>
+            <h1 class="text-sm font-black uppercase tracking-[0.3em] text-zinc-900">Estantes</h1>
+            <div class="w-10"></div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto p-4 pt-6">
+        <div id="grid-estantes" class="grid grid-cols-2 gap-4">
+            </div>
+    </main>
+
+    <script>
+        const estantes = [];
+        // Lista de estantes que son .jpg
+        const listaJpg = [1, 2, 3, 7, 8, 9, 10];
+
+        // Generar lista de 15 estantes
+        for (let i = 1; i <= 15; i++) {
+            let extension = listaJpg.includes(i) ? 'jpg' : 'png';
+            estantes.push({
+                nombre: `Estante-${i}`,
+                precio: 180,
+                archivo: `estantes-${i}.${extension}` 
+            });
+        }
+
+        function renderEstantes() {
+            const container = document.getElementById('grid-estantes');
+            container.innerHTML = estantes.map(estante => `
+                <div class="group bg-white rounded-[2.5rem] p-2 shadow-sm border border-zinc-100 cursor-pointer" 
+                     onclick="irAPersonalizar('${estante.nombre}', ${estante.precio}, '${estante.archivo}')">
+                    
+                    <div class="img-container">
+                        <img src="./${estante.archivo}" 
+                             alt="${estante.nombre}" 
+                             class="group-hover:scale-110 transition duration-700"
+                             onerror="this.src='https://via.placeholder.com/400x400?text=No+Imagen'">
+                        
+                        <div class="absolute inset-0 overlay-sofia opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 flex items-end justify-center pb-6 translate-y-8 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                            <span class="bg-white text-zinc-900 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-xl">Personalizar</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 text-center">
+                        <h2 class="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-1">${estante.nombre}</h2>
+                        <p class="text-xl font-black text-zinc-900">${estante.precio} USD</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ESTA ES LA FUNCIÓN QUE CORRIGE EL ERROR
+        function irAPersonalizar(nombre, precio, imagen) {
+            if (navigator.vibrate) navigator.vibrate(20);
+
+            // 1. Guardamos la información igual que en las otras páginas
+            const producto = { 
+                nombre: nombre, 
+                precio: precio, 
+                imagen: imagen 
+            };
+            localStorage.setItem('argon_temp_product', JSON.stringify(producto));
+            
+            // 2. Redirigimos a detalles-muebles.html (NUNCA más a configurar.html)
+            window.location.href = 'detalles-muebles.html';
+        }
+
+        window.onload = renderEstantes;
+    </script>
+</body>
+</html>

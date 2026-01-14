@@ -73,6 +73,7 @@
     </section>
 
     <div id="overlay" onclick="cerrarPanel()" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[110] hidden transition-opacity duration-300"></div>
+    
     <div id="panel-derecho" class="fixed top-0 right-0 w-[85%] max-w-[320px] h-full bg-white z-[120] shadow-2xl p-6 overflow-y-auto">
         <div class="flex justify-between items-center mb-8">
             <h3 class="text-xs font-black text-zinc-400 uppercase tracking-widest">Explorar ARGON</h3>
@@ -90,6 +91,7 @@
                 <a href="estantes.html" class="menu-item py-3 px-4 text-lg font-bold text-zinc-800 block">Estantes</a>
                 <a href="mesas.html" class="menu-item py-3 px-4 text-lg font-bold text-zinc-800 block">Mesas</a>
                 <a href="puertas.html" class="menu-item py-3 px-4 text-lg font-bold text-zinc-800 block">Puertas</a>
+                <a href="multimuebles.html" class="menu-item py-3 px-4 text-lg font-bold text-zinc-800 block">Multimuebles</a>
             </div>
 
             <div class="mb-8 border-t border-zinc-100 pt-6">
@@ -124,6 +126,7 @@
 
         function renderProducts() {
             const grid = document.getElementById('product-grid');
+            if(!grid) return;
             grid.innerHTML = '';
             productos.forEach((p) => {
                 grid.innerHTML += `
